@@ -1,0 +1,45 @@
+<div class="card">
+    <div>
+        <div (click)="open('Open')">
+            <h2 class="panel-h2" *ngIf="item.value || item.entity_value_name ">
+                {{item.value ? item.value : item.entity_value_name}}
+            </h2>
+            <h2 class="panel-h2" *ngIf="item.intent || item.intent_name">{{item.intent ? item.intent :
+                item.intent_name}}</h2>
+            <h2 class="panel-h2" *ngIf="item.entity || item.entity_name">
+                {{item.entity ? '@' + item.entity : item.entity_name}}
+            </h2>
+            <div class="text-panel">
+                <p>{{item.description}}</p>
+            </div>
+        </div>
+        <div class="bottom">
+            <p class="data-p" *ngIf="item.updated">Modified {{item.updated | dateToGo}}</p>
+            <p class="data-p" *ngIf="item.modified_on">Modified {{item.modified_on | dateToGo}}</p>
+            <p *ngIf="item.approved_by">Approved by: {{item.approved_by.name}}</p>
+            <div *ngIf="assignees.length && (item.status === 'pending' || item.approve_status === 'pending')">
+                <span style="left: 2px;">
+                    <p-dropdown [options]="assignees" [(ngModel)]="item.assigned_to" placeholder="Assign" [style]="{'background-color': '#cbcbcb',
+                      'width': 'auto',
+                      'font-size': '8px',
+                      'border': '0px'}"
+                        [panelStyle]="{'background-color':'#ffffff','width':'120px','border-radius': '0','border': '0'}"
+                        optionLabel="name" (onChange)="handleAssignee(item)"></p-dropdown>
+
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="dropdown-side-menu" *ngIf="item.permissions && item.permissions.length">
+        <div ngbDropdown class="d-inline-block">
+            <a style="padding:0 5px 0 10px;" ngbDropdownToggle>
+                <i class="fa fa-ellipsis-v"></i>
+            </a>
+            <ul class="dropdown-menu " ngbDropdownMenu aria-labelledby="dropdownBasic">
+                <li *ngFor="let premission of item.permissions">
+                    <a (click)="open(premission.name)">{{premission.name}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

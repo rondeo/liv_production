@@ -1,0 +1,449 @@
+@import "~src/sass/common";
+
+.overview-card {
+  margin-bottom: 30px;
+}
+
+/* Custom dropdown */
+.custom-dropdown {
+  position: absolute;
+  display: inline-block;
+  vertical-align: middle;
+  right: 11px;
+  top: 7px;
+}
+
+.custom-dropdown select {
+  background-color: white;
+  color: black;
+  font-size: inherit;
+  padding: .5em;
+  padding-right: 2.5em;	
+  border: 0;
+  margin: 0;
+  border-radius: 3px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  -webkit-appearance: button; /* hide default arrow in chrome OSX */
+  border: 1px solid #eeeeee;
+  border-left: 1px solid #eeeeee;
+  width: 150px;
+}
+
+.custom-dropdown::before,
+.custom-dropdown::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-left: 1px solid #eeeeee;
+}
+
+.custom-dropdown::after { /*  Custom dropdown arrow */
+  content: "\25BC";
+  height: 1em;
+  font-size: .625em;
+  line-height: 1;
+  right: 1.2em;
+  top: 50%;
+  margin-top: -.5em;
+}
+
+.custom-dropdown::before { /*  Custom dropdown arrow cover */
+  width: 2em;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 0 3px 3px 0;
+  border-left: 1px solid #eeeeee;
+}
+
+.custom-dropdown select[disabled] {
+  color: rgba(0,0,0,.3);
+}
+
+.custom-dropdown select[disabled]::after {
+  color: rgba(0,0,0,.1);
+}
+
+.custom-dropdown::before {
+ 
+  border-left: 1px solid #eeeeee;
+}
+
+.custom-dropdown::after {
+  color: rgba(0,0,0,.4);
+}
+  option {
+    text-align: left;
+    /* reset to left*/
+  }
+.user-card {
+  height: auto;
+  margin-left: 15px;
+  box-shadow: 0 8px 22px 0 rgba(0, 0, 0, 0.12);
+  margin-right: 20px;
+  background: white;
+  > .user-details {
+    padding: 20px 20px 0;
+    display: inline-block;
+    width: 100%;
+    > .user-head {
+      color: #000A12;
+      font-size: 15px;
+      display: inline;
+      padding-right: 20px;
+      float: left;
+      width: 25%;
+      white-space: nowrap;
+    }
+    > .user-body {
+      float: left;
+      width: 70%;
+      > .user-main {
+        display: inline-block;
+        padding-top: 0;
+        padding-bottom: 8px;
+        padding-right: 20px;
+        > div {
+          display: inline-block;
+          margin-right: 6px;
+        }
+        > p {
+          display: inline-block;
+          font-size: 15px;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+  > .progress {
+    border-radius: 0;
+    height: 6px;
+  }
+}
+.conversation-list .panel-heading {
+  padding: 15px 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, .3);
+}
+
+.conversation-view-more {
+  background-color: #1E87F0;
+  height: 55px;
+  padding: 15px 0;
+  box-shadow: 0 8px 30px 0 rgba(30, 135, 240, 0.2);
+}
+
+.view-more-title {
+  color: #ffffff;
+  font-family: $font-family;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  line-height: 26px;
+  text-align: center;
+}
+
+
+
+/****************************************/
+
+
+
+
+.content-top-page {
+  position: absolute;
+  top: 86px;
+  margin-left: 13px;
+
+}
+
+
+
+
+
+
+
+
+
+
+.days {
+  font-size: 10px;
+  color: #ffffff;
+  position: absolute;
+  bottom: 0;
+}
+
+
+
+.intent-dashboard .panel-heading {
+  padding: 15px 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, .3);
+}
+
+.object-dashboard .panel-heading {
+  padding: 15px 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, .3);
+}
+
+
+.panel-heading {
+  height: 55px;
+}
+
+@media screen and (min-width: 1620px) {
+  .row.shift-up {
+    > div {
+      margin-top: -573px;
+    }
+  }
+}
+
+@media screen and (max-width: 1620px) {
+  .panel.feed-panel.large-panel {
+    height: auto;
+  }
+}
+
+.user-stats-panel {
+  .panel-title {
+    padding: 0 0 15px;
+  }
+}
+
+.blurCalendar {
+  height: 475px;
+}
+
+/**************************************************** Content top ********************************************/
+
+.app-selection .form-control{
+  background-color: #1E87F0;
+  box-shadow: 0 8px 30px 0 rgba(30,135,240,0.2);
+  border: none;
+  border-radius: 20px;
+
+}
+.app-selection{
+  width:145px !important;
+
+
+}
+.ui-select-bootstrap .ui-select-toggle > .caret {
+  position: absolute;
+  height: 10px;
+  top: 50%;
+  right: 10px;
+  margin-top: -1px;
+}
+.date-picker{
+  margin-bottom: 0 !important;
+
+  width: 190px;
+  background-color: #32D296 !important;
+  box-shadow: 0 8px 30px 0 rgba(50,210,150,0.2) !important;
+  color: #ffffff !important;
+  border-radius: 20px !important;
+  border: none !important;
+}
+.daterangepicker .input-mini.active {
+  background-color: #FFF;
+  border: 1px solid rgba(30,135,240,0.41);
+  box-shadow: inset 0 1px 14px 0 rgba(30,135,240,0.2), 0 0 14px 0 rgba(30,135,240,0.3);
+}
+.daterangepicker .ranges {
+  font-size: 11px;
+  float: none;
+  margin: 8px;
+  text-align: left;
+}
+.daterangepicker .input-mini {
+  background-color: #FFF;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #555;
+  height: 30px;
+  line-height: 30px;
+  display: block;
+  vertical-align: middle;
+  margin: 5px 0 5px 5px;
+  padding: 0 6px 0 28px;
+  width: 100%;
+}
+.range_inputs button.btn.btn-success {
+  height: 30px;
+  width: 80px;
+  background-color: #1E87F0;
+  border-color: #1E87F0;
+  border-radius: 30px;
+  box-shadow: 0 8px 30px 0 rgba(30, 135, 240, 0.2);
+}
+.range_inputs button.btn.btn-default {
+  height: 30px;
+  width: 80px;
+  background-color: #BDBDBD;
+  color:#ffffff;
+  border-radius: 30px;
+  box-shadow: 0 8px 30px 0 rgba(30, 135, 240, 0.2);
+}
+.analytics-datepicker {
+  position: relative;
+  display: inline-block;
+  float: right;
+  width: 100%;
+}
+
+.text-muted {
+  color: white !important;
+}
+.ui-select-match-text span{
+  color: white !important;
+}
+.ui-select-bootstrap > .ui-select-match > .btn {
+  text-align: left !important;
+  color: white !important;
+}
+.app-selection option{
+  background-color: #ffffff;
+}
+select:focus, input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus{
+  outline: none !important;
+}
+.al-breadcrumb {
+  background: none;
+  color: #ffffff;
+  padding: 0;
+  margin: 0;
+  float: right;
+  text-align: center;
+  li {
+    font-size: 14px;
+    font-weight: $font-normal;
+    margin-left: 8px;
+  }
+}
+.rectangle-today {
+  height: 26px;
+  width: 75px;
+  background-color: #1E87F0;
+  box-shadow: 0 8px 30px 0 rgba(30, 135, 240, 0.2);
+  line-height: 26px;
+  border-radius: 20px;
+  color:#ffffff;
+
+}
+.rectangle-upload {
+  height: 26px;
+  width: 90px;
+  background-color: #1E87F0;
+  box-shadow: 0 8px 30px 0 rgba(30, 135, 240, 0.2);
+  line-height: 26px;
+  border-radius: 20px;
+  color:#ffffff;
+
+}
+.rectangle-month {
+  height: 26px;
+  width: 75px;
+  background-color: #FAA05A;
+  box-shadow: 0 8px 30px 0 rgba(250,160,90,0.2);
+  line-height: 26px;
+  border-radius: 20px;
+  color:#ffffff;
+
+}
+.rectangle-year {
+  height: 26px;
+  width: 75px;
+  background-color: #32D296;
+  box-shadow: 0 8px 30px 0 rgba(50,210,150,0.2);
+  line-height: 26px;
+  border-radius: 20px;
+  color:#ffffff;
+
+}
+.breadcrumb > li + li:before{
+  padding: 0 0 !important;
+  color: #ccc;
+  content: "" !important;
+}
+.breadcrumb > .rectangle-month + .rectangle-month:before {
+  padding: 0 0 !important;
+  color: #ccc;
+  content: "" !important;
+}
+.breadcrumb > .rectangle-year + .rectangle-year:before {
+  padding: 0 0 !important;
+  color: #ccc;
+  content: "" !important;
+}
+.al-look {
+  float: right;
+  margin-right: 10px;
+  padding-top: 10px;
+  > a {
+    font-size: 19px;
+  }
+}
+
+@media screen and (max-width: $resS) {
+
+}
+
+@media screen and (max-width: $resXS) {
+
+}
+
+@media (max-width: $resXXS) {
+  .content-top {
+    padding: 0;
+  }
+  .select-app{
+    width: 100px;
+  }
+  .app-selection {
+    width: 100px !important;
+  }
+  .select-date{
+    width:200px;
+  }
+  .select-date input{
+    width:200px;
+  }
+  .content-top-page {
+    position: unset;
+
+    margin-left: 13px;
+  }
+  .app-selection .form-control{
+    width: 100px;
+  }
+}
+
+
+.analytic-chart {
+  margin-bottom: 30px;
+}  
+
+.loader {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  margin: 5px 0 0 0px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 1.5s linear infinite;
+  animation: spin 1.5s linear infinite;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

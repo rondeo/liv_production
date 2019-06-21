@@ -1,0 +1,132 @@
+<app-page-header [pageTitle]="'Conversations '">
+    <div class="go-back" *ngIf="goBack">
+        <a (click)="handleGoBack()">
+            <i class="fa fa-angle-left"></i>
+            <h1>Go back</h1>
+        </a>
+    </div>
+    <p *ngIf="topHeader===false" style="text-align:center;font-size:18px;padding-top:20px;">
+        No records found
+    </p>
+    <div class="loader" *ngIf="loadershow"></div>
+    <div class="col-md-12 conversation" *ngFor="let conversation of conversations">
+        <app-panel [panelStyle]="panelStyle">
+            <div style="height: 160px;margin-bottom: 25px;">
+                <div class="col-md-12 sep parent">
+                    <div>
+                        <div style="display: inline-block;">
+                            <h2 class="conversation-questions" [title]="conversation.inputMessage">
+                                {{conversation.inputMessage | truncate:[60]}}
+                            </h2>
+                        </div>
+
+                        <!-- <div class="engage-div" *ngIf="conversation.engage_enabled && conversation.engage_enabled.status === false && !conversation.hasattachment">
+                            <div class="engage-sub engage-me" *ngIf="conversation.engage_enabled.engagerId == user_id">
+                                <span>
+                                    <i class="fa fa-comments" aria-hidden="true">
+                                        <span>
+                                            Engaged with me
+                                        </span>
+                                    </i>
+                                </span>
+                            </div>
+                            <div class="engage-sub" *ngIf="conversation.engage_enabled.engagerId == null">
+                                <span (click)="registerPopup(conversation, 0);">
+                                    <i class="fa fa-comments" aria-hidden="true">
+                                        <span>
+                                            Engage
+                                        </span>
+                                    </i>
+                                </span>
+                            </div>
+                            <div class="engage-sub engage-other" *ngIf="conversation.engage_enabled.engagerId != null && conversation.engage_enabled.engagerId != user_id">
+                                <span>
+                                    <i class="fa fa-comments" aria-hidden="true">
+                                        <span>
+                                            Engaged with {{conversation.engage_enabled.engagerName | truncate:[60]}}
+                                        </span>
+                                    </i>
+                                </span>
+                            </div>
+                        </div> -->
+
+                        <p class="conversation-response" [title]="conversation.outputMessage"
+                            [ngStyle]="{ width: (conversation.attachment) ? '60%' : '100%' }">
+                            <span>{{conversation.outputMessage | truncate:[280]}}</span>
+                            <img *ngIf="conversation.hasattachment && conversation.attachmentType != 'file'" [src]="conversation.attachment" />
+                            <a *ngIf="conversation.outputMessage =='' && conversation.hasattachment
+                            && conversation.attachmentType == 'file'" [href]="conversation.attachment" target="_blank"><i class="fa fa-file-pdf-o" style="font-size:20px;"></i></a>
+                        </p>
+                    </div>
+                    <div class="absolute">
+                        <div class="conversation-div" *ngIf="conversation.contenttype">
+                            <i class="icon-green" [ngClass]="applyTypeIcon(conversation.contenttype)"
+                                aria-hidden="true"></i>
+                        </div>
+                        <div class="conversation-div" *ngIf="conversation.connectionType">
+                            <i [style.color]="applyfontcolor(conversation.connectionType)"
+                                [ngClass]="applyFontIcon(conversation.connectionType)" aria-hidden="true"
+                                *ngIf="conversation.connectionType!=='bbm' && conversation.connectionType!=='fbmessenger'"></i>
+                            <i [style.color]="applyfontcolor(conversation.connectionType)"
+                                [ngClass]="applyFontIcon(conversation.connectionType)" aria-hidden="true"
+                                *ngIf="conversation.connectionType==='bbm'"></i>
+                            <i [style.color]="applyfontcolor(conversation.connectionType)"
+                                [ngClass]="applyFontIcon(conversation.connectionType)" aria-hidden="true"
+                                *ngIf="conversation.connectionType=='fbmessenger'"></i>
+                            <span style="text-transform: capitalize;">
+                                {{conversation.connectionType === 'whatsappofficial' || conversation.connectionType === 'whatsapp'? 'whatsApp' : conversation.connectionType=== 'fbmessenger' ? 'FB Messenger' :
+                                conversation.connectionType=== 'wechat' ? 'WeChat' :conversation.connectionType=== 'viberpa' ? 'Viber' : conversation.connectionType}}
+                            </span>
+                        </div>
+
+                        <div class="conversation-div">
+                            <i class="fa fa-check-circle icon-green" aria-hidden="true"
+                                *ngIf="conversation.status=='200'"></i>
+                            <i class="fa fa-times-circle icon-red" aria-hidden="true"
+                                *ngIf="conversation.status!='200'"></i>
+                            <span>Status</span>
+                        </div>
+                        <div class="conversation-div" *ngIf="conversation.apiStat">
+                            <i class="fa fa-check-circle icon-green" aria-hidden="true"
+                                *ngIf="conversation.apiStat === '' || conversation.apiStat === 'OK'"></i>
+                            <i class="fa fa-times-circle icon-red" aria-hidden="true"
+                                *ngIf="conversation.apiStat !== '' && conversation.apiStat !== 'OK'"></i>
+                            <span>Api</span>
+                        </div>
+                        <div class="conversation-div"
+                            *ngIf="conversation.manufacture && conversation.manufacture !== ''">
+                            <i class="fas fa-bookmark icon-green" aria-hidden="true"></i>
+                            <span style="text-transform:capitalize">{{conversation.manufacture}}</span>
+                        </div>
+                        <div class="conversation-div" *ngIf="conversation.deviceinfo && conversation.deviceinfo !== ''">
+                            <i class="fas fa-cube icon-green" aria-hidden="true"></i>
+                            <span>{{conversation.deviceinfo}}</span>
+                        </div>
+
+                        <div class="conversation-div" style="float:right;line-height: 30px;">
+                            <span
+                                class="coversation-date-span">{{conversation.modifiedDate | date:"MM/dd/yyyy h:mm a"}}</span>
+                        </div>
+                        <div *ngIf="conversation.userName" class="conversation-div"
+                            style="float:right;line-height: 30px;">
+                            <span>Conversation with:</span>
+                            <span class="coversation-date-span">{{conversation.userName}}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </app-panel>
+
+
+    </div>
+    <app-pagination [collectionSize]="totalCount" [(page)]="page" [maxSize]="3" [disabled]="paginationDisabled"
+        (pageChange)="pageChanged($event)"></app-pagination>
+
+</app-page-header>
+
+<!-- <div id="chatpopup" ng-contrller="conversationsCtrl">
+    <app-engage [messages]="messages"></app-engage>
+</div> -->

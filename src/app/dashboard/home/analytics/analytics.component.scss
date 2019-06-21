@@ -1,0 +1,56 @@
+.user-card {
+  height: auto;
+  margin-left: 15px;
+  box-shadow: 0 8px 22px 0 rgba(0, 0, 0, 0.12);
+  margin-right: 20px;
+  background: white;
+  > .user-details {
+    padding: 20px 20px 0;
+    display: inline-block;
+    width: 100%;
+    > .user-head {
+      color: #000A12;
+      font-size: 20px;
+      display: inline;
+      padding-right: 20px;
+      float: left;
+      width: 20%;
+    }
+    > .user-body {
+      float: left;
+      width: 80%;
+      > .user-main {
+        display: inline-block;
+        padding-top: 0;
+        padding-bottom: 8px;
+        padding-right: 20px;
+        > div {
+          display: inline-block;
+          margin-right: 6px;
+        }
+        > p {
+          display: inline-block;
+          font-size: 16px;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+  > .progress {
+    border-radius: 0;
+    height: 6px;
+  }
+}
+
+.content-top {
+  margin: 15px 20px 20px 15px;
+  display: inline-block;
+  float: right;
+  > form {
+    float: right;
+  }
+}
+
+.analytic-chart {
+  margin-bottom: 30px;
+}

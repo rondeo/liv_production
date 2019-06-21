@@ -1,0 +1,6 @@
+<div class="row" *ngIf="collectionSize > noPerPage">
+    <div class="col-md-12" style="text-align: center;">
+        <ngb-pagination [collectionSize]="collectionSize" [disabled]="disabled" [(page)]="page" [maxSize]="maxSize"
+            [rotate]="true" (pageChange)="pageChanged()"></ngb-pagination>
+    </div>
+</div>

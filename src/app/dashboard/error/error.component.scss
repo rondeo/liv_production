@@ -1,0 +1,26 @@
+.parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    .inner {
+        max-width: 900px;
+        text-align: center;
+
+        div {
+            margin: 25px;
+        }
+
+        h1 {
+            color: #000A12;
+            font-size: 28px;
+            line-height: 33px;
+        }
+
+        .message {
+            color: #888888;
+            font-size: 18px;
+        }
+    }
+}

@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="content-top clearfix">
+    <h1 class="al-title">{{pageTitle}}</h1>
+    <a (click)="back()" *ngIf="goBack">
+      <i class="fa fa-angle-left" style="float: left;color:#828282; font-size: 34px;"></i>
+      <h1 class="al-title" style="color: #828282;font-size: 16px;	padding: 10px;">Go back</h1>
+    </a>
+  </div>
+  <ng-content></ng-content>
+</div>

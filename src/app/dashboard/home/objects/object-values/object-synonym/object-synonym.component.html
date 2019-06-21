@@ -1,0 +1,13 @@
+<app-page-header [pageTitle]="" [goBack]="true">
+  <div class="col-md-12">
+    <h1 class="title">Synonyms for Object > {{synonym}} ({{synonyms.length}})</h1>
+    <div class="col-sm-8 panel" *ngFor="let item of synonyms">
+      <h2 *ngIf="item.synonym">{{item.synonym}}</h2>
+      <h2 *ngIf="item.synonym_name">{{item.synonym_name}}</h2>
+      <div class="bottom">
+        <p *ngIf="item.updated" class="data-p">Modified {{item.updated | dateToGo}}</p>
+        <p *ngIf="item.modified_on" class="data-p">Modified {{item.modified_on | dateToGo}}</p>
+      </div>
+    </div>
+  </div>
+</app-page-header>

@@ -1,0 +1,99 @@
+<app-page-header [pageTitle]="'Analytics'">
+  <!--<div *ngIf="users.length" class="user-card">
+    &lt;!&ndash;todo: Show values on Hover&ndash;&gt;
+    <div class="user-details">
+      <div class="user-head">
+        Total users({{totalUserCount}})
+      </div>
+      <div class="user-body">
+        <div class="user-main" *ngFor="let user of users">
+          <div [ngStyle]="userLegendPercentage(user._id)"></div>
+          <p>{{user._id === 'whatsappofficial' ? 'whatsapp' : user._id}}&nbsp;&nbsp;{{user.count}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="progress">
+      <div class="progress-bar " *ngFor="let user of users" role="progressbar"
+           [ngStyle]="userPercentage(user._id,user.count,users)">
+      </div>
+    </div>
+  </div>-->
+
+  <div class="col-md-6 content-top" *ngIf="true">
+    <form name="dateForm" class="form-horizontal">
+      <div class="form-group analytics-datepicker">
+        <app-date-range-picker [toDate]="toDate" [fromDate]="fromDate"
+                               (valueChange)="dateChanges($event)"></app-date-range-picker>
+      </div>
+    </form>
+  </div>
+  <div class="row" style="margin: 0">
+    <div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="row">
+        <div class="col-xlg-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 analytic-chart" *ngIf="device.length">
+          <app-panel [panelTitle]="'No. of messages per channel'">
+            <app-pie-chart [data]="graphDevice"></app-pie-chart>
+          </app-panel>
+        </div>
+        <div class="col-xlg-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 analytic-chart" *ngIf="intent.length">
+          <app-panel [panelTitle]="'Intents'">
+            <app-pie-chart [data]="graphIntent"></app-pie-chart>
+          </app-panel>
+        </div>
+        <div class="col-xlg-6 col-lg-6 col-md-6 col-sm-12 col-xs-12 analytic-chart" *ngIf="type.length">
+          <app-panel [panelTitle]="'No. of messages by type'">
+            <app-pie-chart [data]="graphType"></app-pie-chart>
+          </app-panel>
+        </div>
+        <div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 analytic-chart" *ngIf="date.length">
+          <app-panel [panelTitle]="'No. of Chats'">
+              <div style="margin: 0 15px;
+              margin-top: 18px;">
+                  <label class="radio-inline" *ngIf="radioStatus==true" >
+                      <input type="radio" *ngIf="radioStatus==true"  style="margin-top: 1px;"
+                      (change)="changeDayChannel('day')" [(ngModel)]="messageDayChannel" name="radio_activity"value="day"> Day
+                  </label>
+                  <label class="radio-inline">
+                      <input type="radio" style="margin-top: 1px;"
+                      (change)="changeDayChannel('week')" [(ngModel)]="messageDayChannel" name="radio_activity"value="week"> Week
+                  </label>
+                  <label class="radio-inline">
+                      <input type="radio" style="margin-top: 1px;"
+                      (change)="changeDayChannel('month')" [(ngModel)]="messageDayChannel"  name="radio_activity"value="month"> Month
+                  </label>
+               </div>
+            <app-bar-chart [data]="graphDate" ></app-bar-chart>
+          </app-panel>
+        </div>
+        <div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 analytic-chart" *ngIf="revenue.length">
+          <app-panel [panelTitle]="'Revenue'">
+            <app-bar-chart [data]="graphRevenue" ></app-bar-chart>
+          </app-panel>
+        </div>
+
+		<div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 analytic-chart" *ngIf="date.length">
+          <app-panel [panelTitle]="'No. of unique users registered'">
+              <div style="margin: 0 15px;
+              margin-top: 18px;">
+                  <label class="radio-inline" *ngIf="radioStatus==true" >
+                      <input type="radio" *ngIf="radioStatus==true"  style="margin-top: 1px;"
+                      (change)="changeusersChannel('day')" [(ngModel)]="messageUserChannel" name="radio_users"value="day"> Day
+                  </label>
+                  <label class="radio-inline">
+                      <input type="radio" style="margin-top: 1px;"
+                      (change)="changeusersChannel('week')" [(ngModel)]="messageUserChannel" name="radio_users"value="week"> Week
+                  </label>
+                  <label class="radio-inline">
+                      <input type="radio" style="margin-top: 1px;"
+                      (change)="changeusersChannel('month')" [(ngModel)]="messageUserChannel"  name="radio_users"value="month"> Month
+                  </label>
+               </div>
+
+              <!-- <div class="loader" *ngIf="analyticloader"></div> -->
+                 <app-bar-chart [data]="graphUsersDay" ></app-bar-chart>
+          </app-panel>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-page-header>

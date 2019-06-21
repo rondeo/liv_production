@@ -1,0 +1,67 @@
+ngb-pagination /deep/ .pagination {
+
+  >li:last-child>a,
+  >li:last-child>span,
+  >li:first-child>a,
+  >li:first-child>span {
+    border-radius: 50px !important;
+    background-color: #B2B9C1 !important;
+    color: #B2B9C1 !important;
+    height: 30px;
+    width: 30px;
+    padding: 5px !important;
+  }
+
+  >li:last-child>a:before {
+    content: "\e905" !important;
+    font-family: primeicons;
+    font-size: 20px;
+    color: #ffffff;
+    position: absolute;
+    top: 0;
+    right: 4px;
+  }
+
+
+
+  >li:first-child>a:before {
+    content: "\e904" !important;
+    font-family: primeicons;
+    font-size: 20px;
+    color: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 4px;
+  }
+
+  >.active>a,
+  >.active>span,
+  >.active>a:hover,
+  >.active>span:hover,
+  >.active>a:focus,
+  >.active>span:focus {
+    outline: none;
+    background-color: unset;
+    color: #000000;
+    border-color: #d6d6d6;
+  }
+
+  >li>a,
+  >li>span {
+    color: #000A12;
+    border: 0px solid #ddd;
+    color: #BCBDBD;
+    background: transparent;
+  }
+
+  >.disabled>span,
+  >.disabled>span:hover,
+  >.disabled>span:focus,
+  >.disabled>a,
+  >.disabled>a:hover,
+  >.disabled>a:focus {
+    outline: none;
+    background-color: transparent;
+  }
+
+}

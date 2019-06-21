@@ -1,0 +1,4 @@
+<div class="dashboard-body">
+    <router-outlet *ngIf="apiStatus"></router-outlet>
+    <app-error *ngIf="!apiStatus" (setStatus)="statusSet($event)"></app-error>
+</div>

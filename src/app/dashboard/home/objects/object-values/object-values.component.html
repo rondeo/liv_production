@@ -1,0 +1,47 @@
+<app-page-header [pageTitle]="" [goBack]="true">
+  <h1 class="title">Objects > @{{object}} ({{values.length}})</h1>
+
+  <div [ngClass]="{'col-md-12': !sideBar,'col-md-8': sideBar}" style="padding:0;">
+    <div class="outter" [ngClass]="{'col-md-4': !sideBar,'col-md-6': sideBar}" *ngFor="let value of values">
+      <app-card [item]="value" (action)="objectAction($event)" class="object"></app-card>
+    </div>
+    <div class="col-md-4" *ngIf="newButton && userType === 'agent'">
+      <div class="add">
+        <i class="fa fa-plus-circle pagination-icon" (click)="addNewObject()"></i>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="sideBar" class="col-md-4 right-div">
+    <form>
+      <div style="padding:15px 20px;">
+        <div>
+          <p class="form-label">Value name</p>
+          <div class="form-group">
+            <textarea [(ngModel)]="value.value_name" style="padding: 3px;" class="form-control form-textarea" name="objectComment"
+              maxlength="1024"></textarea>
+          </div>
+
+          <p class="form-label">Synonyms</p>
+          <div class="form-group">
+            <tag-input [(ngModel)]="value.synonyms" name="examples" [placeholder]="'Add Synonyms'"
+              [secondaryPlaceholder]="'Add Synonyms'" theme="bootstrap3-info" [identifyBy]="'_id'" [displayBy]="'synonym_name'"
+              [separatorKeys]="[',']"></tag-input>
+          </div>
+
+        </div>
+        <div>
+          <button *ngIf="value.update" class="btn-blue" style="margin-right:10px;" (click)="updateValue(value)">
+            Update
+          </button>
+          <button *ngIf="value.add" class="btn-blue" style="margin-right:10px;" (click)="addValue(value)">
+            Add
+          </button>
+          <button class="btn-grey" style="margin-right:10px;" (click)="cancelValue()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</app-page-header>

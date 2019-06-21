@@ -1,0 +1,14 @@
+<!--<div class="page-top clearfix" scroll-position="scrolled" max-height="50" ng-class="{'scrolled': scrolled}">-->
+<div class="page-top clearfix">
+  <div style="display: inline-block;" class="bg" [ngStyle]="{'width': width ? '270px' : '70px'}">
+    <a class="al-logo clearfix" *ngIf="width">
+      <img src="assets/images/dashboard/unified-ai-logo-white.svg" style="width:108px;"/>
+    </a>
+    <a class="collapse-menu-link ion-navicon" style="float: right;padding-right: 15px;"
+       ba-sidebar-toggle-menu (click)="toogleWidth()"></a>
+  </div>
+
+  <div class="user-profile clearfix">
+    <app-msg-center></app-msg-center>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<!--<aside
+       ng-swipe-right="$baSidebarService.setMenuCollapsed(false)"
+       ng-swipe-left="$baSidebarService.setMenuCollapsed(true)" ng-mouseleave="hoverElemTop=selectElemTop">-->
+       <aside class="al-sidebar" [style.width]="sideBarWidth">
+        <!--<ul slimscroll="{height: '{{menuHeight}}px'}"  slimscroll-watch="menuHeight">-->
+        <ul class="al-sidebar-list">
+            <li class="al-sidebar-list-item ng-scope with-sub-menu" routerLinkActive="ba-sidebar-item-expanded" *ngFor="let menu of menuItems">
+                <a [routerLink]="dashboardPrefix + menu.path.toLowerCase()" class="al-sidebar-list-link ng-scope menu-expand-padding">
+                     <i [ngClass]="[menu.font_icon==='far fa-images'?'':'fa', menu.font_icon,'menu-side-icon']"></i>
+                    <span class="ng-binding menu-content">{{menu.name}}</span>
+                </a>
+                <!--<ul ng-class="{'slide-right': item.slideRight}">-->
+                <ul class="al-sidebar-sublist ng-scope" *ngIf="sideBarWidth ==='270px'">
+                    <li class="ba-sidebar-sublist-item ng-scope" routerLinkActive="ba-sidebar-text-Conversation ba-sidebar-text-Questions"
+                        *ngFor="let submenu of menu.sub">
+                        <!--<a ng-mouseenter="hoverItem($event, item)" ui-state="submenu.stateRef || ''" ui-sref-active="selected" >
+                -->
+                        <a [routerLink]="dashboardPrefix + submenu.path.toLowerCase()" ngClass="['ng-binding', 'ng-scope', submenu.name]">
+                            {{submenu.name}}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div [style.width]="sideBarWidth" style="position: fixed;bottom: 0px;padding: 10px; box-sizing: border-box;
+   
+    background: white;" [ngClass]="{'tac': sideBarWidth == '70px'}">
+    <div style="display:inline-block;" [ngClass]="{'fr': sideBarWidth !== '70px'}">
+    <ul style="padding-top: 14px;list-style-type: none;">
+    <li ngbDropdown>
+    <a [routerLink]="" class="msg" ngbDropdownToggle>
+    <i class="fa fa-cog" style="font-size: 22px;color: #828282;margin-left: 20px"></i>
+    </a>
+    <div ngbDropdownMenu class="top-dropdown-menu setting-dropdown" style="background: transparent;
+    border: 0px;
+    box-shadow: none;">
+    <div class="header clearfix" style="left: 29px;
+    font-size: 12px;
+    padding: 15px;
+    position: relative;
+    top: -94px;
+    background: white;box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);border-radius:5px;">
+    <p>
+    <a [routerLink]="">
+    <i class="fa fa-user" aria-hidden="true" style="padding-right: 5px;"></i>{{userName}}<br>
+    <span style="font-size:10px;padding-left:18px;text-transform: capitalize;">({{userType}})</span>
+    </a>
+    </p>
+    <p>
+    <a [routerLink]="" (click)="logout()">
+    <i class="fa fa-sign-out" aria-hidden="true" style="padding-right: 5px;"></i> Logout</a>
+    </p>
+    </div>
+    </div>
+    </li>
+    </ul>
+    </div>
+    </div>
+      
+    </aside>

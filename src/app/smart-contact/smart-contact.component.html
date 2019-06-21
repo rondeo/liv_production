@@ -1,0 +1,31 @@
+<div class="header">
+  <img *ngFor="let image of smartContactImage" [src]="'assets/images/'+image.url" alt="uib"
+  [ngStyle]="{'margin':image.margin?image.margin:'0px'}" [style.height]="image.height">
+</div>
+<br>
+<div class="header-right">
+  <div style="padding: 15px 0">
+    <div style="padding:15px; font-size:16px;">Start Chatting</div>
+    <div>
+      <a href="https://uib.li/smartbutler-whatsapp" target="_blank" title="WhatsApp">
+        <i class="fab fa-whatsapp"></i></a>
+    </div>
+  </div>
+
+  <span>OR</span>
+
+  <div style="margin-top: 20px">
+    <a [href]="vCardFile" download>
+      <span class="login"><span style="font-size: 20px;margin-right: 5px;"></span>DOWNLOAD VCARD</span>
+    </a>
+  </div>
+</div>
+
+
+
+<div class="footer">
+  <p>
+    &copy; {{year}}
+    <a href="https://unifiedinbox.com">UIB Holdings Pte. Ltd.</a>
+  </p>
+</div>

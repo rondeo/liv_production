@@ -1,0 +1,9 @@
+<div class="col-xs-12 col-12 col-md-4 form-group" style="float: right">
+  <input class="form-control"
+    #dp="bsDaterangepicker"
+    bsDaterangepicker
+    [(ngModel)]="bsRangeValue"
+    [bsConfig]="{containerClass: 'theme-dark-blue' }"
+    (bsValueChange)="onValueChange($event)">
+  <i (click)="dp.toggle()" [attr.aria-expanded]="dp.isOpen" class="fa fa-caret-down" aria-hidden="true"></i>
+</div>

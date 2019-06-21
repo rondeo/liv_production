@@ -1,0 +1,60 @@
+@import "~src/sass/common";
+
+.overview-card-intent {
+  height: 150px;
+  background: linear-gradient(180deg, #61AFF9 0%, #1E87F0 100%);
+  box-shadow: 0 8px 30px 0 rgba(30, 135, 240, 0.2);
+}
+
+.overview-card-things {
+  height: 150px;
+  background: linear-gradient(180deg, #F9C040 0%, #FA9917 100%);
+  box-shadow: 0 8px 30px 0 rgba(30, 135, 240, 0.2);
+}
+
+.overview-card-conversation {
+  height: 150px;
+  background: linear-gradient(180deg, #32D296 0%, #2AC940 100%);
+  box-shadow: 0 8px 30px 0 rgba(30, 135, 240, 0.2);
+}
+
+.body-panel {
+  padding: 15px;
+  display: inline-block;
+  width: 65%;
+}
+
+.panel-h5 {
+  color: #FFF;
+  font-family: $font-family;
+  font-size: 20px;
+  line-height: 23px;
+}
+
+.text-panel {
+  display: inline-block;
+  height: 62px;
+  p {
+    color: #ffffff;
+    font-size: 42px;
+    position: relative;
+    top: calc(50% - 10px);
+    /* 50% - 3/4 of icon height */
+  }
+}
+
+.body-panel-2 {
+  display: inline-block;
+  float: right;
+  height: 150px;
+  width: 80px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.4) 100%);
+  i {
+    color: #ffffff;
+    font-size: 26px;
+    position: relative;
+    top: calc(50% - 10px);
+    /* 50% - 3/4 of icon height */
+  }
+}

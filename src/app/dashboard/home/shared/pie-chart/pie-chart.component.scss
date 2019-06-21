@@ -1,0 +1,7 @@
+@import "~src/sass/common";
+
+.chart {
+  padding: 20px 0;
+  @include scrollbars(.3em, #d9d9d9, rgba(0, 0, 0, 0));
+
+}

@@ -1,0 +1,40 @@
+<div class=" auth-block center-div" style="text-align:center">
+  <div style="text-align: center;padding: 0 0 40px 0;width: 100%;">
+    <img src="assets/images/dashboard/unified-ai-logo-blue.svg" style="width: 240px;" />
+  </div>
+  <div class="auth-block-body">
+    <form name="loginForm" (ngSubmit)="loginForm.form.valid && sign_in(user)" #loginForm="ngForm" novalidate>
+      <div class="col-xs-9 login-input" style="padding: 42px 10px;">
+        <div class="form-group">
+          <div class="col-xs-12 login-input" [class.error-textbox]="error.status === true">
+            <input type="text" class="form-control" name="user" [(ngModel)]="user.username" i18n-placeholder="@@placeHolderUserName"
+              placeholder="Username" #userName="ngModel" autocomplete="username" required>
+            <span *ngIf="(loginForm.submitted && userName.invalid) || (userName.errors && (userName.dirty || userName.touched))">
+              Username is required
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-xs-12 login-input" [class.error-textbox]="error.status === true">
+            <input type="password" class="form-control" name="password" [(ngModel)]="user.password" i18n-placeholder="@@placeHolderPassword"
+              placeholder="Password" #password="ngModel" autocomplete="current-password" required>
+            <span *ngIf="(loginForm.submitted && password.invalid) || (password.errors && (password.dirty || password.touched))">
+              Password is required
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-3 login-input submit">
+        <div class=" login-submit" style="padding:0;margin:0;">
+          <button class="btn-default btn-auth" type="submit">
+            <i class="fa fa fa-arrow-circle-right login-icon"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="errormsg" *ngIf="error.status">
+    <i class="fa fa-warning" style="color:red"></i>
+    <p [hidden]="!error.status">{{error.message}}</p>
+  </div>
+</div>

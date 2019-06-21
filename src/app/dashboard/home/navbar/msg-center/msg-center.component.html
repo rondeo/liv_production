@@ -1,0 +1,53 @@
+<!-- <div id="toast-container" class="toast-top-left inline" style="pointer-events: auto;">
+    <div toastContainer></div>
+</div> -->
+<!-- <div class="inline" toastContainer></div>
+<div class="notification" style="position: relative;">
+    <span style="position: absolute; top: 15px;left: 15px;color: #828282;font-size: 16px; line-height: 19px;" *ngIf="headerNotifications.length>3">+{{headerNotifications.length-3}}</span>
+</div> -->
+
+<ul class="al-msg-center clearfix">
+    <!--<li uib-dropdown style="margin: -10px;" ng-show="activePageurl == '/Conversations'">-->
+    <li ngbDropdown style="margin: -10px;" *ngIf="currentRoute === dashboardPrefix+'/conversations'">
+        <div class="search">
+            <!-- <input id="searchInput" class="empty" type="text" placeholder="&#xF002; Search" style="margin:0;"
+                [(ngModel)]="search" (ngModelChange)="searchChanged(search)"> 
+            <input type="text" [(formControl)]="search" placeholder="&#xF002; Search" id="searchInput" name="search"
+                class="empty" style="margin:0;" >-->
+        </div>
+    </li>
+    <li ngbDropdown>
+        <a [routerLink]="" ngbDropdownToggle (click)="count>0 && countUpdate()">
+            <i class="fa fa-bell" style="font-size: 18px;color: #828282;"></i>
+            <span *ngIf="count>0">{{count}}</span>
+            <!--<div class="notification-ring"></div>-->
+        </a>
+        <div ngbDropdownMenu class="top-dropdown-menu notification-main">
+            <div>
+                <div class="courses-list msg-list" infiniteScroll [scrollWindow]="false" (scrolled)="loadMoreCourses()">
+                    <a [routerLink]="" class="clearfix" *ngFor="let notification of resultList"
+                        [class.notification-lists-read]="!notification.read" (click)="notificationRead(notification)">
+                        <div class="img-area"></div>
+                        <div class="msg-area">
+                            <div>
+                                <p style="font-size:14px;">{{notification.message}}</p>
+                            </div>
+                            <div>
+                                <p class="notification-bottom" style="float:right">
+                                    {{notification.modified_on | date:'MM/dd/yyyy h:mm a'}}
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                    <div style="text-align:center;width:100%;padding: 5px;">
+                        <img style="text-align:center;width:45px;" src="assets/images/uib-loader.gif" *ngIf="notificationSpinner">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+    
+</ul>
+<!--<script type="text/ng-template" id="myTemplateWithData.html">
+  <p>Room No.: {{toaster.data.roomNo}}</p>
+</script>-->

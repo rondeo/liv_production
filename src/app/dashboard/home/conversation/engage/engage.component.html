@@ -1,0 +1,52 @@
+<div class="main">
+    <div class="popup-box chat-popup" *ngFor="let message of messages">
+        <!-- <div class="popup-head" ng-class="{header_min : toggle}"> -->
+        <!-- <div class="popup-head" ng-class="{header_min : toggle}">
+            <div class="popup-head-left">
+                <p *ngIf="message.data.length"> {{message.data[0].userName}}</p>
+                <p *ngIf="message.data.length" style="font-size:10px;">Room No.: {{message.data[0].roomNo}}</p>
+            </div>
+            <div class="tools">               
+                <span tooltip-placement="left" uib-tooltip="Disengage" (click)="disengage();closePopup();">
+                    <i class="fa fa-close" aria-hidden="true">
+                    </i>
+                </span>
+            </div>
+        </div> -->
+        <!-- <div ng-class="{chat_body_min : toggle}" when-scrolled="loadMore(' + id + ',messages[' + id + '].length,messages[' + id + '])" scroll-bottom-on="status.loaded" class="popup-messages" scrolling="yes/no/auto" scroll-glue > -->
+        <div class="popup-messages" #scrollMe>
+            <!-- <div style="text-align:center;padding-top:30px;width:100%;">
+                        <i ng-if="msgloader" class="fa fa-spinner fa-spin" style="font-size:24px;width:25px;"></i>
+                    </div> -->
+            <ul class="messages-body" ng-if="msgloader == false">
+                <!-- <li ng-repeat="msg in messages[' + id + '] | reverse"> -->
+                <li *ngFor="let msg of message.data | arrayReverse">
+                    <div class="input-msg macro">
+                        <div class="text text-r">
+                            <p>{{msg.inputMessage}}</p>
+                            <p><span>{{msg.modifiedDate | date:"MM/dd/yyyy h:mm a"}}</span></p>
+                        </div>
+                    </div>
+                    <div *ngIf="msg.engage_enabled != false">
+                        <div class="output-msg macro" *ngFor="let outputChat of msg.responses">
+                            <div class="text text-l">
+                                <p>{{outputChat.message}}</p>
+                                <p><span>{{outputChat.date | date:"MM/dd/yyyy h:mm a"}}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div ng-class="{chat_body_min : toggle}" class="chat-text">
+            <form name="myForm" (ngSubmit)="myForm.form.valid && sendMessage(message,outputChat[message.data[0].id])"
+                #myForm="ngForm" novalidate>
+                <input [(ngModel)]="outputChat[message.data[0].id]" type="text" name="outputChat" />
+                <!-- <button type="submit" style="padding: 0px;border: 0px;background: transparent;">
+               <img src="assets/img/theme/icon/menupath_icon/conversations.png" ></button> -->
+            </form>
+        </div>
+
+    </div>
+</div> 
+

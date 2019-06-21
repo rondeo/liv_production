@@ -1,0 +1,14 @@
+<div class="feed-message" [class.white]="index%2===0">
+  <div class="text-block text-message">
+    <div class="message-header">
+      <span class="author" [title]="message.inputMessage">{{message.inputMessage | truncate:[35]}}</span>
+    </div>
+    <!--<div class="message-content line-clamp" ng-class="{'line-clamp-2' : !message.expanded}">-->
+    <div class="message-content line-clamp" [title]="message.outputMessage" *ngIf="message.outputMessage !== ''">
+      {{message.outputMessage | truncate:[45]}}
+    </div>
+    <div class="message-content line-clamp" *ngIf="message.outputMessage === '' && message.attachment !== ''">
+      <a [href]="message.attachment" target="_blank">{{message.attachment | truncate:[45]}}</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,462 @@
+<app-page-header [pageTitle]="'History (' + totalMessageCount + ')'">
+
+  <div class="go-back" *ngIf="goBack">
+    <a (click)="handleGoBack()">
+      <i class="fa fa-angle-left"></i>
+      <h1>Go back</h1>
+    </a>
+  </div>
+  <div class="loader" *ngIf="loadershow"></div>
+  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-left">
+      <form name="dateForm" style="float: right;margin-top: -41px;
+      margin-left: -20px;margin-right: -8px;">
+        <div class="form-group analytics-datepicker" [style.display]="viewdropdown ? 'block' : 'none'">
+          <app-date-range-picker [toDate]="toDate" [fromDate]="fromDate" (valueChange)="dateChanges($event)"></app-date-range-picker>
+        </div>
+      </form>
+      <div style="float: right;;
+      margin-top: -50px;
+      margin-left: -40px;">
+        <span class="custom-dropdown big" style="">
+          <select [(ngModel)]="model.power" (change)="changemessages()">
+            <option value="last30">Last 30 days</option>
+            <option value="choosedate"> Date range</option>
+          </select>
+        </span>
+      </div>
+     
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 pull-left" style="margin-left: -190px;">
+    
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-5 col-lg-8 pull-left" style="">
+    <div class="inner-addon left-addon"  style="position: absolute;
+    right: 0px;
+    top: 6px;
+    z-index: 100;
+    margin-right: 22px;">
+       <button style="float: right;padding:10px;padding-bottom: 7px;
+       margin-left: 8px;
+       background: white;
+       border: 1px solid #ccc;border-radius: 4px;"
+       (click)="onKeydownsearch(search)"> <i class="fas fa-search" style="
+        "></i></button>
+      <input type="text" [(ngModel)]="search" (keydown)="onKeydown1($event,search)" placeholder="Search with phone no. or name"
+        class="form-control form-cotrol-question" style="height: 40px;border: none;" name="search_history"
+        style="padding-left:20px;float: right;
+        width: 268px;">
+     
+    </div>
+  </div>
+  
+  <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding:0px;width:100%">
+    <mat-tab-group (selectedTabChange)="userviewshow($event)" class="mat-tab-group-class">
+      <mat-tab label="User View" (click)="backfunction()">
+        <ng-container *ngIf="!listview" style="overflow:none;">
+          <div class="col-md-12 conversation" *ngFor="let conversation of conversations">
+            <div [class.highlight]="conversation.msgId==messageId" (click)="conversationView(conversation)">
+              <div style="background-color: #fff;padding: 6px; color: #000A12;text-align: center;
+            font-size: larger;border-bottom: 1px solid rgba(0,0,0,.2); vertical-align: middle;height:39px;margin-top: 5px;">
+
+                <span style="vertical-align: middle;">{{conversation.userName}} </span>
+                <span style="vertical-align: middle;" [class.circle]="conversation.userName" *ngIf="conversation.connectionType=='whatsapp' && conversation.phoneNo">
+                  +{{conversation.phoneNo}} </span>
+                <span style="vertical-align: middle;" class="circle"> {{conversation.count}} Messages</span>
+
+              </div>
+
+              <app-panel [panelStyle]="panelStyle">
+                <div style="height: 160px;margin-bottom: 25px;">
+                  <div class="col-md-12 sep parent">
+                    <div>
+                      <div style="display: inline-block;">
+                        <h2 style="cursor: pointer;" class="conversation-questions" (click)="listuserview(conversation.id,conversation)" (click)="conversationView(conversation)">
+                          {{conversation.inputMessage | truncate:[60]}}&nbsp;
+                          <!--({{conversation.count}})-->
+                        </h2>
+                      </div>
+
+                      <p class="conversation-response" [ngStyle]="{ width: (conversation.attachment) ? '100%' : '100%' }"
+                        (click)="conversationView(conversation)">
+                        <span style="pointer-events: none;" >{{conversation.outputMessage | truncate:[260]}}</span>
+                        <a *ngIf="conversation.outputMessage =='' && conversation.hasattachment
+                        && conversation.attachmentType == 'file'" [href]="conversation.attachment" target="_blank"><i class="fa fa-file-pdf-o" style="font-size:20px;"></i></a>
+                      </p>
+                    </div>
+                    <div class="absolute">
+                      <div class="conversation-div" *ngIf="conversation.contenttype">
+                        <i class="icon-green" [ngClass]="applyTypeIcon(conversation.contenttype)" aria-hidden="true"></i>
+                      </div>
+                      <div class="conversation-div" *ngIf="conversation.connectionType">
+                        <i [style.color]="applyfontcolor(conversation.connectionType)"  [ngClass]="applyFontIcon(conversation.connectionType)" aria-hidden="true"
+                          *ngIf="conversation.connectionType!='fbmessenger'"></i>
+                        <i [style.color]="applyfontcolor(conversation.connectionType)" [ngClass]="applyFontIcon(conversation.connectionType)" aria-hidden="true"
+                          *ngIf="conversation.connectionType=='fbmessenger'"></i>
+                        <span style="text-transform: capitalize;" *ngIf="conversation.connectionType=='whatsapp'">WhatsApp</span>
+                        <span style="text-transform: capitalize;" *ngIf="conversation.connectionType=='fbmessenger'">Facebook
+                          Messenger</span>
+                        <span style="text-transform: capitalize;" *ngIf="conversation.connectionType!='fbmessenger' && conversation.connectionType!='whatsapp'">{{conversation.connectionType}}</span>
+                      </div>
+                      <div class="conversation-div">
+                        <i class="fa fa-check-circle icon-green" aria-hidden="true" *ngIf="conversation.status=='200'"></i>
+                        <i class="fa fa-times-circle icon-red" aria-hidden="true" *ngIf="conversation.status!='200'"></i>
+                        <span>Status</span>
+                      </div>
+                      <div class="conversation-div" *ngIf="conversation.apiStat">
+                        <i class="fa fa-check-circle icon-green" aria-hidden="true" *ngIf="conversation.apiStat === '' || conversation.apiStat === 'OK'"></i>
+                        <i class="fa fa-times-circle icon-red" aria-hidden="true" *ngIf="conversation.apiStat !== '' && conversation.apiStat !== 'OK'"></i>
+                        <span>Api</span>
+                      </div>
+                      <div *ngIf="conversation.question_category" class="conversation-div" style="line-height: 30px;">
+                        <span>Category:</span>
+                        <span class="coversation-date-span">{{conversation.question_category}}</span>
+
+                      </div>
+
+                      <div class="conversation-div" style="float:right;line-height: 30px;">
+                        <span class="coversation-date-span">{{conversation.modifiedDate  | date:"MM/dd/yyyy h:mm a"}}</span>
+
+                      </div>
+
+                    </div>
+                  </div>
+                 
+
+                </div>
+
+
+              </app-panel>
+
+            </div>
+
+          </div>
+          <app-pagination [collectionSize]="totalCount" [(page)]="page" [maxSize]="3" [disabled]="paginationDisabled"
+            (pageChange)="pageChanged($event)"></app-pagination>
+        </ng-container>
+        <ng-container *ngIf="listview">
+          <div style="background-color: #fff;padding: 6px; color: #000A12;text-align: center;
+                font-size: larger;border-bottom: 1px solid rgba(0,0,0,.2);height:39px; margin-top: 5px;">
+            <span style="float:left;cursor: pointer ; " (click)="userviewgoback()">
+              <img style=" margin-top: -7px;" src="./assets/img/goback.png" />
+              <span style="  height: 24px;
+              width: 57px;
+              color: #828282;
+              font-family: Roboto;
+              font-size: 16px;
+              line-height: 19px;vertical-align: 3px;" >go back</span> 
+            </span>
+            <i [style.color]="applyfontcolor(userlistdata.connectionType)" [ngClass]="applyFontIcon(userlistdata.connectionType)" style="vertical-align:middle;"
+              aria-hidden="true" *ngIf="userlistdata.connectionType!='fbmessenger'"></i>
+
+            <span style="vertical-align:middle;">&nbsp; {{userlistdata.userName}} </span>
+
+            <span style="vertical-align:middle;" [class.circle]="userlistdata.userName" *ngIf="userlistdata.connectionType=='whatsapp' && userlistdata.phoneNo">&nbsp;
+              +{{userlistdata.phoneNo}} </span>
+            <span style="vertical-align:middle;" class="circle"> {{userlistdata.count}} Messages</span>
+
+
+          </div>
+
+
+
+
+          <app-panel [panelStyle]="panelStyle">
+            <div class="col-md-12 conversation" style="background-color: #fff;" *ngFor="let userList of userviewList">
+              <div style="cursor: default;">
+                <p class="conversation-questions"  style="text-align:center;width:58%;height: auto; border-radius:10px;font-size: 13px;
+                line-height: 19px;color:#000A12;background-color:#c9c7c969;padding: 10px; margin-top: 10px;"
+                 >
+                  {{userList.inputMessage }}&nbsp;
+                  <!--({{userList.count}})-->
+
+                </p>
+                <!-- <i _ngcontent-c21="" aria-hidden="true" class="icon-green far fa-comment" style="font-size: 20px;margin-right: 5px;"></i> -->
+				<i _ngcontent-c21="" aria-hidden="true" class="icon-green" [ngClass]="applyTypeIcon(userList.contenttype)" style="font-size: 20px;margin-right: 5px;"></i>
+                <span class="coversation-date-span chat-date">{{userList.createdDate | date:"MM/dd/yyyy h:mm a"}}</span>
+                <!-- Modified by HS -->
+                <p class="conversation-response" [ngStyle]="{ width: (userList.attachment) ? '100%' : '100%' }">
+                  <span  *ngIf="userList.outputMessage" style="width:58%;height: auto; border-radius:10px;font-size: 13px;
+              line-height: 19px;color:#fff;background-color:#1E87F0;float:right;text-align: center;padding: 10px"
+                   >{{userList.outputMessage}}</span>
+                <span *ngIf="userList.hasattachment" style="width:auto;border-radius:10px;float:right;margin-right:10px;">
+					  <img style="height:100px;width:100px;" *ngIf="userList.hasattachment
+						   && userList.attachmentType == 'image'" [src]="userList.attachment" />
+					  <audio controls *ngIf="userList.hasattachment
+						   && userList.attachmentType == 'voice'"><source [src]="userList.attachment"></audio>
+						   <a *ngIf="userList.outputMessage =='' && userList.hasattachment
+                    && userList.attachmentType == 'file'" [href]="userList.attachment" target="_blank"><i class="fa fa-file-pdf-o" style="font-size:20px;"></i></a>
+				</span>
+
+                </p>
+
+              </div>
+
+              <div *ngIf="userList.articleId" style=" float: right;text-align: right;width:100%;font-size:10px;color:#828282;">
+                Article ID: {{userList.articleId}}
+                <span *ngIf="userList.question_category">({{userList.question_category}})</span>
+                <!-- <span *ngIf="!userList.question_category">(General)</span>-->
+              </div>
+            </div>
+          </app-panel>
+          <app-pagination [collectionSize]="userviewtotal" [(page)]="pagelist" [maxSize]="3" [disabled]="paginationDisabled"
+            (pageChange)="pageChangedlist(userlistdata.id,$event)"></app-pagination>
+
+        </ng-container>
+
+
+      </mat-tab>
+      <mat-tab label="Unanswered">
+        <ng-container *ngIf="!unanswercheck">
+          <div class="col-md-12 conversation" *ngFor="let unanswerdetail of unanswerdetails">
+            <div [class.highlight]="unanswerdetail.msgId==messageId" (click)="unanswerViewclick(unanswerdetail)">
+              <!-- <div style="background-color: #fff;padding: 6px; color: #000A12; font-weight: 500;text-align: center;
+                   font-size: larger;border-bottom: 1px solid rgba(0,0,0,.2);">
+                   
+                     <span>{{unanswerdetail.userName}} </span>
+                     <span>. +{{unanswerdetail.phoneNo}} .</span>
+                     <span>{{unanswerdetail.count}} Messages</span>
+                   
+                   </div> -->
+
+              <app-panel [panelStyle]="panelStyle">
+                <div style="height: 160px;margin-bottom: 25px;margin-top: 5px;">
+                  <div class="col-md-12 sep parent">
+                    <div>
+                      <div style="display: inline-block;">
+                        <h2 style="cursor:pointer;" class="conversation-questions" (click)="listuserview(unanswerdetail.id,unanswerdetail)" (click)="unanswerViewclick(unanswerdetail)">
+                          {{unanswerdetail.inputMessage | truncate:[60]}}&nbsp;
+                         ({{unanswerdetail.unrecognizedCount}})
+                        </h2>
+                      </div>
+
+                      <p class="conversation-response" [ngStyle]="{ width: (unanswerdetail.attachment) ? '100%' : '100%' }">
+                        <span style="pointer-events: none;"  >{{unanswerdetail.outputMessage |truncate:[260] }}</span>
+                       
+                      </p>
+                    </div>
+                    <div class="absolute">
+                      <div class="conversation-div" *ngIf="unanswerdetail.contenttype">
+                        <i class="icon-green" [ngClass]="applyTypeIcon(unanswerdetail.contenttype)" aria-hidden="true"></i>
+                      </div>
+                      <div class="conversation-div" *ngIf="unanswerdetail.connectionType">
+                        <i [style.color]="applyfontcolor(unanswerdetail.connectionType)" [ngClass]="applyFontIcon(unanswerdetail.connectionType)" aria-hidden="true"
+                          *ngIf="unanswerdetail.connectionType!='fbmessenger'"></i>
+                        <i [style.color]="applyfontcolor(unanswerdetail.connectionType)" [ngClass]="applyFontIcon(unanswerdetail.connectionType)" aria-hidden="true"
+                          *ngIf="unanswerdetail.connectionType=='fbmessenger'"></i>
+                        <span style="text-transform: capitalize;" *ngIf="unanswerdetail.connectionType=='whatsapp'">WhatsApp</span>
+                        <span style="text-transform: capitalize;" *ngIf="unanswerdetail.connectionType=='fbmessenger'">Facebook
+                          Messenger</span>
+                        <span style="text-transform: capitalize;" *ngIf="unanswerdetail.connectionType!='fbmessenger' && unanswerdetail.connectionType!='whatsapp'">{{unanswerdetail.connectionType}}</span>
+
+                      </div>
+                      <div class="conversation-div">
+                        <i class="fa fa-check-circle icon-green" aria-hidden="true" *ngIf="unanswerdetail.status=='200'"></i>
+                        <i class="fa fa-times-circle icon-red" aria-hidden="true" *ngIf="unanswerdetail.status!='200'"></i>
+                        <span>Status</span>
+                      </div>
+                      <div class="conversation-div" *ngIf="unanswerdetail.apiStat">
+                        <i class="fa fa-check-circle icon-green" aria-hidden="true" *ngIf="unanswerdetail.apiStat === '' || unanswerdetail.apiStat === 'OK'"></i>
+                        <i class="fa fa-times-circle icon-red" aria-hidden="true" *ngIf="unanswerdetail.apiStat !== '' && unanswerdetail.apiStat !== 'OK'"></i>
+                        <span>Api</span>
+                      </div>
+
+
+                      <div class="conversation-div" style="float:right;line-height: 30px;">
+                        <span class="coversation-date-span">{{unanswerdetail.modifiedDate | date:"MM/dd/yyyy h:mm a"}}</span>
+
+                      </div>
+                      <div class="conversation-div" *ngIf="unanswerdetail.userName" style="float:right;line-height: 30px;">
+                        <span>Conversation with:</span>
+                        <span class="coversation-date-span">{{unanswerdetail.userName}}</span>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- <div class="col-md-2 sep1 conversation-curser flex-container">
+                         <i class="icon-green" [ngClass]="applyFontIcon(conversation.connectionType)" *ngIf="conversation.connectionType=='whatsapp'"
+                           aria-hidden="true"></i>
+                         <i class="icon-blue" [ngClass]="applyFontIcon(conversation.connectionType)" style="margin-right: 100px;"
+                           *ngIf="conversation.connectionType=='fbmessenger'" aria-hidden="true"></i>
+               
+                         <span *ngIf="conversation.phoneNo !== ''&&conversation.connectionType==='whatsapp'">&nbsp;{{conversation.phoneNo}}</span>
+                         <span *ngIf="conversation.phoneNo === ''&&conversation.connectionType==='whatsapp'">Nil</span>
+                       </div> -->
+
+                </div>
+
+
+              </app-panel>
+
+            </div>
+          </div>
+          <app-pagination [collectionSize]="unanswertotal" [(page)]="unanswerpage" [maxSize]="3" [disabled]="paginationDisabled"
+            (pageChange)="unanswerPageChanged($event)"></app-pagination>
+        </ng-container>
+        <ng-container *ngIf="unanswercheck">
+          <div style="background-color: #fff;padding: 6px; color: #000A12; font-weight: 500;text-align: center;
+                        font-size: larger;border-bottom: 1px solid rgba(0,0,0,.2);margin-top: 5px;height:39px; ">
+            <span style="float:left;cursor: pointer ; font-size: 25px" (click)="sessionviewgoback()">
+              <img style=" margin-top: -7px;" src="./assets/img/goback.png" />
+              <span style="  height: 24px;
+              width: 57px;
+              color: #828282;
+              font-family: Roboto;
+              font-size: 16px;
+              line-height: 19px;vertical-align: 3px;" >go back</span> 
+            </span>
+            <i [style.color]="applyfontcolor(userlistdata.connectionType)" [ngClass]="applyFontIcon(userlistdata.connectionType)" style="vertical-align:middle;"
+              aria-hidden="true" *ngIf="userlistdata.connectionType!='fbmessenger'"></i>
+            <span style="vertical-align:middle;">&nbsp;{{userlistdata.userName}} </span>
+            <span style="vertical-align:middle;" [class.circle]="userlistdata.userName" *ngIf="userlistdata.connectionType=='whatsapp' && userlistdata.phoneNo">
+              +{{userlistdata.phoneNo}} </span>
+            <span style="vertical-align:middle;" class="circle" *ngIf="userviewtotal"> {{userviewtotal}} Messages</span>
+
+
+          </div>
+
+
+
+
+          <app-panel [panelStyle]="panelStyle">
+            <div class="col-md-12 conversation" style="background-color: #fff;" *ngFor="let sessionlist of userviewList">
+              <div style="cursor: default;">
+                <p class="conversation-questions"  style="text-align:center;width:58%;height: auto; border-radius:10px;font-size: 13px;
+                        line-height: 19px;color:#000A12;background-color:#c9c7c969;padding: 10px;margin-top: 23px; margin-top: 10px;"
+                  >
+                  {{sessionlist.inputMessage}}&nbsp;
+                  <!--({{conversation.count}})-->
+
+                </p>
+                <!-- <i _ngcontent-c21="" aria-hidden="true" class="icon-green far fa-comment" style="font-size: 20px;margin-right: 5px;"></i>
+                <span class="coversation-date-span chat-date">{{sessionlist.createdDate | date:"MM/dd/yyyy h:mm a"}}</span> -->
+				<i _ngcontent-c21="" aria-hidden="true" class="icon-green" [ngClass]="applyTypeIcon(sessionlist.contenttype)" style="font-size: 20px;margin-right: 5px;"></i>
+				<span class="coversation-date-span chat-date">12345{{sessionlist.createdDate | date:"MM/dd/yyyy h:mm a"}}</span>
+                <p class="conversation-response" [ngStyle]="{ width: (sessionlist.attachment) ? '100%' : '100%' }">
+                  <span  style="width:58%;height: auto; border-radius:10px;font-size: 13px;
+                      line-height: 19px;color:#fff;background-color:#1E87F0;float:right;padding: 10px;text-align: center"
+                    >{{sessionlist.outputMessage}}</span>
+                  <!--<img *ngIf="sessionlist.hasattachment" [src]="sessionlist.attachment" />-->
+                </p>
+
+              </div>
+              <div *ngIf="sessionlist.articleId" style=" float: right;text-align: right;width:100%;font-size:10px;color:#828282;">
+                Article ID: {{sessionlist.articleId}}
+                <span *ngIf="sessionlist.question_category">({{sessionlist.question_category}})</span>
+                <!-- <span *ngIf="!sessionlist.question_category">(General)</span> -->
+              </div>
+            </div>
+            <app-pagination [collectionSize]="userviewtotal" [(page)]="sessionlistpage" [maxSize]="3" [disabled]="paginationDisabled"
+              (pageChange)="pageChangedlist(userlistdata.id,$event)"></app-pagination>
+          </app-panel><!--sessionpageChangedlist(userlistdata.id,$event)-->
+          
+
+        </ng-container>
+
+      </mat-tab>
+   
+
+     
+    </mat-tab-group>
+  </div>
+  <div *ngIf="unanswerview" class="col-md-5 conversation-right-div" style="padding:20px;">
+
+    <div class="row row-bottom">
+      <div class="col-md-6">
+        <p class="question-view-label sideheader">Conversation with</p>
+        <p class="view-questions-part unanswerview-bottom">{{unanswerlist.userName}}</p>
+      </div>
+      <div class="col-md-6">
+        <p class="question-view-label sideheader">Phone number</p>
+        <p class="view-answer-part unanswerview-bottom" *ngIf="unanswerlist.connectionType=='whatsapp' && unanswerlist.phoneNo">+{{unanswerlist.phoneNo}}</p>
+        <p class="view-answer-part unanswerview-bottom" *ngIf="unanswerlist.connectionType!='whatsapp'">N/A</p>
+      </div>
+    </div>
+    <div class="row row-bottom">
+      <div class="col-md-12">
+        <p class="question-view-label sideheader">Channel</p>
+        <p class="view-questions-part unanswerview-bottom"> 
+          <i [style.color]="applyfontcolor(unanswerlist.connectionType)" [ngClass]="applyFontIcon(unanswerlist.connectionType)"
+            aria-hidden="true" *ngIf="unanswerlist.connectionType!='fbmessenger'"></i>
+          <i [style.color]="applyfontcolor(unanswerlist.connectionType)" [ngClass]="applyFontIcon(unanswerlist.connectionType)" aria-hidden="true" *ngIf="unanswerlist.connectionType=='fbmessenger'"></i>
+          <span style="text-transform: capitalize;" *ngIf="unanswerlist.connectionType=='whatsapp'">&nbsp;WhatsApp</span>
+          <span style="text-transform: capitalize;" *ngIf="unanswerlist.connectionType=='fbmessenger'">&nbsp;Facebook
+            Messenger</span>
+          <span style="text-transform: capitalize;" *ngIf="unanswerlist.connectionType!='fbmessenger' && unanswerlist.connectionType!='whatsapp'">&nbsp;{{unanswerlist.connectionType}}</span></p>
+      </div>
+    </div>
+    <div class="row row-bottom">
+      <div class="col-md-12">
+        <p class="question-view-label sideheader">Conversation initiated</p>
+        <p class="view-answer-part unanswerview-bottom" *ngIf="unanswerlist.connectionType=='whatsapp'"><span>{{unanswerlist.createdDate|date:"MM/dd/yyyy"}}</span></p>
+      </div>
+    </div>
+    <!--<button type="button" class="btn-encrytion" *ngIf="viewsessionAll" (click)="listsessionview(unanswerlist.sessionId,unanswerlist)" style="float: left;margin-top: 40px;width: 70%;">View full session</button>-->
+
+    <button type="button" class="btn-encrytion" *ngIf="viewunanswered" (click)="listuserview(unanswerlist.id,unanswerlist)"  style="float: left;margin-top: 68px;width: 70%;">View all conversations</button>
+
+
+    <button type="button" class="btn-encrytion" (click)="redirect_QA()" style="float: left;margin-top: 15px;width: 70%;">
+      View conversational elements</button>
+
+
+  </div>
+  <div *ngIf="view" class="col-md-5 conversation-right-div" style="padding:20px;">
+    <div class="row row-bottom">
+      <div class="col-md-6">
+          <p class="question-view-label sideheader">Conversation with</p>
+        <p class="view-questions-part unanswerview-bottom" *ngIf="conversationlist.connectionType=='whatsapp'"><span>{{conversationlist.userName}}</span></p>
+
+      </div>
+      <div class="col-md-6">
+          <p class="question-view-label sideheader">Phone number</p>
+        
+          <p class="view-answer-part unanswerview-bottom" *ngIf="conversationlist.connectionType=='whatsapp' && conversationlist.phoneNo"><span>+{{conversationlist.phoneNo}}</span></p>
+          <p class="view-answer-part unanswerview-bottom" *ngIf="conversationlist.connectionType!='whatsapp'"><span>N/A</span></p>
+      </div>
+    </div>
+    <div class="row row-bottom">
+      <div class="col-md-6">
+        <p class="question-view-label sideheader">Channel</p>
+        <p class="view-questions-part unanswerview-bottom"> 
+          <i [style.color]="applyfontcolor(conversationlist.connectionType)" [ngClass]="applyFontIcon(conversationlist.connectionType)"
+            aria-hidden="true" *ngIf="conversationlist.connectionType!='fbmessenger'"></i>
+          <i [style.color]="applyfontcolor(conversationlist.connectionType)"  [ngClass]="applyFontIcon(conversationlist.connectionType)" aria-hidden="true" *ngIf="conversationlist.connectionType=='fbmessenger'"></i>
+          <span style="text-transform: capitalize;" *ngIf="conversationlist.connectionType=='whatsapp'">&nbsp;WhatsApp</span>
+          <span style="text-transform: capitalize;" *ngIf="conversationlist.connectionType=='fbmessenger'">&nbsp;Facebook
+            Messenger</span>
+          <span style="text-transform: capitalize;" *ngIf="conversationlist.connectionType!='fbmessenger' && conversationlist.connectionType!='whatsapp'">&nbsp;{{conversationlist.connectionType}}</span></p>
+
+      </div>
+      <div class="col-md-6">
+        <p class="question-view-label sideheader">Total number of messages</p>
+        <p class="view-answer-part unanswerview-bottom"><span>{{conversationlist.count}}</span></p>
+      </div>
+    </div>
+    <div class="row row-bottom">
+      <div class="col-md-6">
+        <p class="question-view-label sideheader">First conversation</p>
+        <p class="view-questions-part unanswerview-bottom"> {{conversationlist.initialDate|date:"MM/dd/yyyy"}}</p>
+
+      </div>
+      <div class="col-md-6">
+        <p class="question-view-label sideheader">Most recent conversation</p>
+        <p class="view-answer-part unanswerview-bottom"><span>{{conversationlist.modifiedDate
+            | date:"MM/dd/yyyy h:mm a"}}</span></p>
+      </div>
+    </div>
+    <div class="row row-bottom">
+      <div class="col-md-6">
+        <p class="question-view-label sideheader">Conversations per day</p>
+        <p class="view-questions-part unanswerview-bottom"> {{conversationlist.conversationsPerDay}}</p>
+
+      </div>
+      <div class="col-md-6">
+        <p class="question-view-label sideheader">Conversations per week</p>
+        <p class="view-answer-part unanswerview-bottom"><span>{{conversationlist.conversationsPerWeek}}</span></p>
+      </div>
+    </div>
+
+    <button type="button" class="btn-encrytion" *ngIf="viewAll" (click)="listuserview(conversationlist.id,conversationlist)" style="float: left;margin-top: 68px;width: 50%;">View all conversations</button>
+  </div>
+</app-page-header>
+

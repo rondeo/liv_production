@@ -1,0 +1,37 @@
+.modal-backdrop.fade.show {
+  opacity: 0.5 !important;
+}
+
+.modal.fade.show {
+  opacity: 1 !important;
+  top: 100px !important;
+}
+
+.modal.show .modal-dialog {
+  -webkit-transform: translate(0, 0) !important;
+  transform: translate(0, 0) !important;
+
+  .btn-no {
+    border-width: 1px;
+    color: #000A12;
+    background: transparent;
+    border-color: #d6d6d6;
+    background-color: #BDBDBD !important;
+    box-shadow: 0 8px 30px 0 rgba(189, 189, 189, 0.2);
+    height: 30px;
+    width: 80px;
+    border: 0;
+    border-radius: 20px;
+  }
+
+  .btn-yes {
+    border-width: 1px;
+    background-color: #1E87F0 !important;
+    box-shadow: 0 8px 30px 0 rgba(30, 135, 240, 0.2);
+    height: 30px;
+    width: 80px;
+    border: 0;
+    border-radius: 20px;
+    color: white;
+  }
+}

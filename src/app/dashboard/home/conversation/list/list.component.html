@@ -1,0 +1,141 @@
+<app-page-header [pageTitle]="" [goBack]="true">
+    <div class="article-tree">
+        <!-- <div ng-style="{'overflow': 'hidden'}" style="overflow: auto;"> -->
+        <div>
+            <!-- <div class="tree" style="margin-top: -55px;" ng-style="heightTree(msgList)"> -->
+            <div class="tree" style="margin-top: -55px;">
+                <ul style="margin-left:10px;">
+                    <li class="parent-li ng-scope ng-not-empty ng-valid" ng-model="displayTree">
+                        <!-- <span ng-click="nodeClicked(node)"> </span> -->
+                        <span></span>
+                        <app-panel *ngIf="messageTitle" class="node-tree primary-tree" [panelStyle]="{ 'box-shadow': '0 8px 22px 0 rgba(0, 0, 0, 0.12)','margin-bottom': '25px' }">
+                            <div class="panel-body" style="padding:0px; margin-top: 45px;">
+                                <div class="col-md-1 sep parent" style="width:40px;box-shadow: none;padding: 8px;">
+                                    <div style="position: absolute;">
+                                        <i class="fa fa-angle-down" style="position: relative;top: 48px;"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-11 parent">
+                                    <h2 class="conversation-questions" style="padding-top: 15px;">
+                                        <!--<span *ngIf="messageTitle.phone">{{messageTitle.phone | truncate:[75]}}</span>-->
+                                        <span *ngIf="messageTitle.name">&bull; {{messageTitle.name}}</span>
+                                        <span *ngIf="messageTitle.room_no">  (Room Number: {{messageTitle.room_no}})</span>
+                                    </h2>
+                                    <p [title]="messageTitle.intents">{{messageTitle.messages_count}} Responses</p>
+                                    <!--<p [title]="messageTitle.intents">{{messageTitle.intents | truncate:[115]}}</p>
+                                    <p [title]="messageTitle.entities">{{messageTitle.entities | truncate:[115]}}</p>-->
+                                    <div class="absolute">
+                                        <!--<div class="conversation-div">
+                                            <span class="coversation-date-span">{{messageTitle.messages_count}}</span>
+                                        </div>-->
+                                        <div class="conversation-div" *ngFor="let item of messageTitle.connections">
+                                            <i class="icon-green" [ngClass]="applyFontIcon(item)" aria-hidden="true"
+                                                *ngIf="item!=='bsh'"></i>
+                                            <span style="text-transform: capitalize;" *ngIf="item!=='bsh'">
+												{{item === 'whatsappofficial' ? 'whatsapp' : item}}
+											</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </app-panel>
+                        <!--<div class="row" *ngIf="conversations.length">
+                            <div class="col-md-2 col-md-offset-8">
+                                <p style="font-size: 12px;	color: #BDBDBD;margin:0;">Intents</p>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="font-size: 12px;	color: #BDBDBD;margin:0;">Objects</p>
+                            </div>
+                        </div>-->
+                        <!-- <ul class="ng-scope" ng-show="custom"> -->
+                        <ul *ngIf="conversations.length" style="margin-top: 40px;">
+                            <!-- <li class="parent-li " style="margin-right:0;padding-right:0;"
+                ng-repeat=" msglist in msgList" ng-model="node.children"> -->
+
+                            <li class="parent-li " style="margin-right:0;padding-right:0;" *ngFor="let item of conversations">
+                                <!-- <span ng-click="nodeClicked(node)"> </span> -->
+                                <span></span>
+                                <div class="col-md-12 conversation" style="padding-right: 0;padding-left: 0;">
+                                    <app-panel class="node-tree" [panelStyle]="{ 'box-shadow': '0 8px 22px 0 rgba(0, 0, 0, 0.12)','margin-bottom': '25px' }">
+                                        <div class="panel-body" style="padding:0px;">
+                                            <div class="col-md-10 sep parent">
+                                                <h2 class="conversation-questions" [title]="item.inputMessage">
+                                                    {{item.inputMessage | truncate:[60]}}
+                                                </h2>
+                                                <p class="conversation-response" [title]="item.outputMessage" [ngStyle]="{ width: (item.attachment) ? '60%' : '100%' }"
+                                                    (click)="conversationDetails(item.id)">
+                                                    <span>{{item.outputMessage | truncate:[280]}}</span>
+                                                    <img *ngIf="item.hasattachment" [src]="item.attachment" />
+                                                </p>
+                                                <div class="absolute">
+                                                    <div class="conversation-div" *ngIf="item.contenttype">
+                                                        <i class="icon-green" [ngClass]="applyTypeIcon(item.contenttype)"
+                                                            aria-hidden="true"></i>
+                                                    </div>
+                                                    <div class="conversation-div" *ngIf="item.connectionType">
+                                                        <i class="icon-green" [ngClass]="applyFontIcon(item.connectionType)"
+                                                            aria-hidden="true" *ngIf="item.connectionType!=='bsh'"></i>
+                                                        <span style="text-transform: capitalize;">
+															{{item.connectionType === 'whatsappofficial' ? 'whatsapp' :item.connectionType}}
+														</span>
+                                                    </div>
+                                                    <div class="conversation-div">
+                                                        <i class="fa fa-check-circle icon-green" aria-hidden="true"
+                                                            *ngIf="item.status==200"></i>
+                                                        <i class="fa fa-times-circle icon-red" aria-hidden="true" *ngIf="item.status!=200"></i>
+                                                        <span>Status</span>
+                                                    </div>
+                                                    <div class="conversation-div" *ngIf="item.apiStat">
+                                                        <i class="fa fa-check-circle icon-green" aria-hidden="true"
+                                                            *ngIf="item.apiStat === '' || item.apiStat === 'OK'"></i>
+                                                        <i class="fa fa-times-circle icon-red" aria-hidden="true" *ngIf="item.apiStat !== '' && item.apiStat !== 'OK'"></i>
+                                                        <span>Api</span>
+                                                    </div>
+                                                    <div class="conversation-div" *ngIf="item.manufacture && item.manufacture !== ''">
+                                                        <i class="fas fa-bookmark icon-green" aria-hidden="true"></i>
+                                                        <span style="text-transform:capitalize">{{item.manufacture}}</span>
+                                                    </div>
+                                                    <div class="conversation-div" *ngIf="item.deviceinfo !== ''">
+                                                        <i class="fas fa-cube icon-green" aria-hidden="true"></i>
+                                                        <span>{{item.deviceinfo}}</span>
+                                                    </div>
+
+                                                    <div class="conversation-div" style="float:right;line-height: 30px;">
+                                                        <span class="coversation-date-span">{{item.modifiedDate }}</span>
+                                                    </div>
+                                                   <!-- <div class="conversation-div">
+                                                        <i class="fa fa-user icon-green" aria-hidden="true" *ngIf="item.userName != ''"></i>
+                                                        <span style="padding-right: 5px;" *ngIf="item.userName !== ''">
+                                                            {{item.userName | truncate:[15]}},
+                                                        </span>
+                                                        <span *ngIf="item.userName != ''">
+                                                            Room_No {{item.roomNo}}
+                                                        </span>
+                                                    </div>-->
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 sep1 conversation-curser flex-container" >
+                                                    <i class="icon-green" [ngClass]="applyFontIcon(item.connectionType)" *ngIf="item.connectionType=='whatsapp'||item.connectionType=='whatsappofficial'"
+                                                    aria-hidden="true"></i>
+                                                  <i class="icon-blue" [ngClass]="applyFontIcon(item.connectionType)" style="margin-right: 100px;"
+                                                    *ngIf="item.connectionType=='fbmessenger'" aria-hidden="true"></i>
+                                        
+                                                    <span *ngIf="item.phoneNo !== ''&&item.connectionType==='whatsapp'">&nbsp;{{item.phoneNo}}</span>
+                                                    <span *ngIf="item.phoneNo !== ''&&item.connectionType==='whatsappofficial'">&nbsp;{{item.phoneNo}}</span>
+                                                   <span *ngIf="item.phoneNo === ''&&item.connectionType==='whatsapp'">Nil</span>
+                                            </div>
+
+                                        </div>
+                                    </app-panel>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <app-pagination [collectionSize]="totalCount" [(page)]="page" [maxSize]="3" [disabled]="paginationDisabled"
+        (pageChange)="pageChanged($event)"></app-pagination>
+</app-page-header>

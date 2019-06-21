@@ -1,0 +1,16 @@
+<main class="menu-collapsed">
+    <div ng-show="status== true">
+        <app-sidebar></app-sidebar>
+        <app-navbar></app-navbar>
+
+        <div class="al-main" [style.margin-left]="leftMargin">
+            <div class="al-content">
+                <router-outlet (activate)="onActivate($event)"></router-outlet>
+            </div>
+        </div>
+        <go-top-button [animate]="true" [speed]="50" [acceleration]="2" [scrollDistance]="300" [classNames]="'custom-class'"
+            [styles]="">
+            <i class="fa fa-angle-up"></i>
+        </go-top-button>
+    </div>
+</main>

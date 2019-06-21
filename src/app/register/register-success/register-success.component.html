@@ -1,0 +1,25 @@
+<div class="content">
+  <div>
+    <a [routerLink]="['/register']">
+      <img src="assets/images/uib-blue.png">
+    </a>
+  </div>
+  <div *ngIf="message !== ''; else noMessage;">
+    <div>
+      <a [routerLink]="['/register']">
+        <img src="assets/images/tick.png">
+      </a>
+    </div>
+    <div class="heading">
+      Thank You !
+    </div>
+    <div>
+      {{message}}
+    </div>
+  </div>
+  <ng-template #noMessage>
+    <div>
+      Sorry, Something went wrong.
+    </div>
+  </ng-template>
+</div>

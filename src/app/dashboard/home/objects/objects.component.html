@@ -1,0 +1,66 @@
+<app-page-header [pageTitle]="'Objects' + suffix">
+    <app-menubar [items]="menuItems" (menuChange)="changeMenu($event)"></app-menubar>
+    <div class="go-back" *ngIf="goBack">
+        <a (click)="handleGoBack()">
+            <i class="fa fa-angle-left"></i>
+            <h1>Go back</h1>
+        </a>
+    </div>
+    <div [ngClass]="{'col-md-12': !sideBar,'col-md-8': sideBar}" style="padding:0;">
+        <div class="row" style="margin:10px 0;padding-top:20px;" *ngFor="let item of mainItems">
+            <h3>{{item.heading.name}}</h3>
+            <div class="outter" [ngClass]="{'col-md-4': !sideBar,'col-md-6': sideBar}" *ngFor="let entity of item.entities">
+                <app-card [item]="entity" [assignees]="assignees" (action)="objectAction($event)" (assigneeChange)="changeAssignee($event)"></app-card>
+            </div>
+            <div class="col-md-4" *ngIf="newButton && userType === 'agent'">
+                <div class="object-add">
+                    <i class="fa fa-plus-circle pagination-icon" (click)="addNewObject()"></i>
+                </div>
+            </div>
+            <app-pagination [collectionSize]="item.count" [(page)]="page[item.heading.value]" [maxSize]="3" [disabled]="paginationDisabled"
+                (pageChange)="pageChanged($event)" [noPerPage]="9" [type]="item.heading.value"></app-pagination>
+        </div>
+    </div>
+    <div *ngIf="sideBar" class="col-md-4 right-div">
+        <form>
+            <div style="padding:15px 20px;">
+                <div *ngIf="object.reject; else add;">
+                    <p class="form-label">Comment</p>
+                    <div class="form-group">
+                        <textarea [(ngModel)]="object.comment" style="padding: 3px;" class="form-control form-textarea"
+                            name="objectComment" maxlength="1024" [disabled]="object.disable" placeholder="Comment"></textarea>
+                    </div>
+                </div>
+
+                <ng-template #add>
+                    <p class="form-label">Object name</p>
+                    <div class="form-group">
+                        <textarea [(ngModel)]="object.name" style="padding: 3px;" class="form-control form-textarea"
+                            name="objectName" maxlength="1024" [disabled]="object.disable"></textarea>
+                    </div>
+
+                    <p class="form-label">Description</p>
+                    <div class="form-group">
+                        <textarea [(ngModel)]="object.description" style="padding: 3px;" class="form-control form-textarea"
+                            name="description" maxlength="1024" [disabled]="object.disable"></textarea>
+                    </div>
+                </ng-template>
+
+                <div>
+                    <button class="btn-blue" style="margin-right:10px;" *ngIf="object.add" (click)="createObject(object)">
+                        Save
+                    </button>
+                    <button class="btn-blue" style="margin-right:10px;" *ngIf="object.reject" (click)="rejectObject(object)">
+                        Reject
+                    </button>
+                    <button class="btn-blue" style="margin-right:10px;" *ngIf="object.update" (click)="updateObject(object)">
+                        Update
+                    </button>
+                    <button class="btn-grey" style="margin-right:10px;" (click)="cancelObject()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</app-page-header>

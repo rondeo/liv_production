@@ -1,0 +1,7 @@
+<div class="top-right">
+    <ul class="nav nav-pills">
+        <li *ngFor="let item of menu" class="uib-tab nav-item" [class.active]="item.active">
+            <a (click)="selectMenu(item)" class="nav-link">{{item.name}}</a>
+        </li>
+    </ul>
+</div>

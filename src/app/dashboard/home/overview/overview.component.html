@@ -1,0 +1,82 @@
+<app-page-header [pageTitle]="'Dashboard'">
+  <div *ngIf="users.length" class="user-card" style="margin-right: 5px;">
+      <div class="user-details">
+       <div class="user-head">
+         Total registered users &nbsp;({{totalUserCount}})
+       </div>
+       <div class="user-body">
+         <div class="user-main" *ngFor="let user of users">
+           <div [ngStyle]="userLegendPercentage(user._id)"></div>
+           <p>{{user._id}}&nbsp;&nbsp;{{user.count}}</p>
+         </div>
+       </div>
+     </div>
+     <div class="progress">
+       <div class="progress-bar " *ngFor="let user of users" role="progressbar"
+            [ngStyle]="userPercentage(user._id,user.count,users)">
+       </div>
+     </div>
+   </div>
+   <div class="loader" *ngIf="showloader"></div>
+  <div class="row" style="margin:0;">
+<div class="overview-card">
+  <div class="col-sm-4" style="margin-bottom:20px;margin-right: 0px;">
+    <app-overview-card [type]="'conversation'" [value]="count.totalcount.toLocaleString()" ></app-overview-card>
+  </div>
+
+  <div class="col-sm-8 content-top" style="margin-bottom:20px;">
+      <div class="col-sm-4" style="margin-bottom:20px;padding-right: 5px;float:right" [style.display]="viewdropdown ? 'block' : 'none'">
+          <form name="dateForm" style="margin-right: 0px;
+        margin-left: 0px;" >
+            <div class="form-group analytics-datepicker" style="right: -28px;">
+              <app-date-range-picker [toDate]="toDate" [fromDate]="fromDate"
+                                    (valueChange)="dateChanges($event)"></app-date-range-picker>
+            </div>
+          </form>
+      </div>
+    <div class="col-sm-3" style="margin-bottom:20px;margin-right: 0px;padding-right: 5px;float:right" >
+      <span class="custom-dropdown big" style="float: right; right: -12px;
+      margin-top: -5px;">
+          <select  [(ngModel)]="model2.power"   (change)="changedatepicker()" style="width: 124px;">
+              <option value="last30">Last 30 days</option>
+              <option value="choosedate"> Date range</option>
+          </select>
+      </span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<div class="row" style="margin: 0;">
+  <div class="col-xlg-12 col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-right: 5px;padding-right: 5px;">
+    <app-panel [panelTitle]="'No. of Chats'">
+
+
+        <br>
+        <div style="margin: 0 15px;">
+            <label class="radio-inline" *ngIf="radioStatus==true" >
+                <input type="radio" *ngIf="radioStatus==true"  style="margin-top: 1px;"
+                (change)="changeChannel('day')" [(ngModel)]="messageChannel" name="radio_activity"value="day"> Day
+            </label>
+            <label class="radio-inline">
+                <input type="radio" style="margin-top: 1px;"
+                (change)="changeChannel('week')" [(ngModel)]="messageChannel" name="radio_activity"value="week"> Week
+            </label>
+            <label class="radio-inline">
+                <input type="radio" style="margin-top: 1px;"
+                (change)="changeChannel('month')" [(ngModel)]="messageChannel"  name="radio_activity"value="month"> Month
+            </label>
+         </div>
+        <div style="text-align: center;
+        margin-top: 30px;" *ngIf="!graphValues.graph">
+          <i class="loader"  style="font-size:24px"></i>
+        </div>
+        <app-bar-chart  [graphHeight]="365" [data]="graphValues"></app-bar-chart>
+    </app-panel>
+  </div>
+  <div class="loader" *ngIf="showoverviewloader"></div>
+
+</div>
+</app-page-header>

@@ -1,0 +1,11 @@
+<app-page-header [pageTitle]="" [goBack]="true">
+  <div class="col-md-12">
+    <h1 class="intent-title">Example for Intent > #{{intent}} ({{intents.length}})</h1>
+    <div class="col-sm-8 intent-panel" *ngFor="let item of intents">
+      <h2>{{item.text}}</h2>
+      <div class="bottom">
+        <p class="data-p">Modified {{item.updated | dateToGo}}</p>
+      </div>
+    </div>
+  </div>
+</app-page-header>

@@ -1,0 +1,242 @@
+@import "~src/sass/common";
+
+$text-color: #000000;
+$redColor: #FF0000;
+:focus {
+  outline: none !important;
+}
+
+.center-div {
+
+}
+
+.errormsg {
+  height: 80px;
+  width: 460px;
+  /*opacity: 50%;*/
+  background-color: rgba(255, 0, 0, 0.3);
+  margin-top: 30px;
+  text-align: center;
+  padding: 15px;
+}
+
+.errormsg i {
+  font-size: 32px;
+  line-height: 32px;
+  text-align: center;
+  color: $redColor;
+}
+
+.errormsg p {
+  font-size: 18px !important;
+  line-height: 21px;
+  text-align: center;
+  color: $redColor;
+  padding: 5px;
+}
+
+.error-textbox input {
+  color: $redColor;
+}
+
+.btn-auth.btn-default:active:focus {
+  background-color: transparent !important;
+}
+
+.form-control, .form-control:focus {
+  @include placeholderStyle($text-color, 0.9);
+  background-color: #cbcbcb;
+  border-radius: 0;
+  color: $text-color;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  @include placeholderStyle($text-color, 0.6);
+}
+
+.auth-main {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.login-input {
+  input {
+    height: 40px;
+  }
+  .btn-auth {
+    width: 100%;
+    height: 40px;
+    border: 0;
+    border-radius: 20px;
+    background: transparent;
+    cursor: pointer;
+  }
+}
+
+.login-input span {
+  color: red;
+  position: absolute;
+  font-size: 13px;
+  width: 100%;
+  bottom: -10px;
+  left: 17px;
+  text-align: left;
+}
+
+.login-input input[type=text], input[type=password] {
+  background-color: #FFF !important;
+  box-shadow: inset 0 1px 14px 0 rgba(30, 135, 240, .2), 0 0 14px 0 rgba(30, 135, 240, .3);
+  margin: 10px 0;
+}
+
+.login-submit {
+  text-align: center;
+  box-sizing: border-box;
+  height: 200px;
+
+}
+
+.auth-block-body {
+
+  height: 200px;
+  width: 460px;
+  background: linear-gradient(180deg, #61AFF9 0%, #1E87F0 100%);
+  box-shadow: 0 8px 30px 0 rgba(30, 135, 240, 0.2);
+  border-radius: 0;
+  color: #fff;
+
+}
+
+.submit {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.login-submit > button {
+  position: relative;
+  top: calc(50% - 20px);
+}
+
+.login-icon {
+  font-size: 40px
+}
+
+.auth-block {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 410px;
+  width: 460px;
+
+  color: #fff;
+  h1 {
+    font-weight: $font-light;
+    margin-bottom: 28px;
+    text-align: center;
+  }
+  p {
+    font-size: 16px;
+  }
+  a {
+    text-decoration: none;
+    outline: none;
+    transition: all 0.2s ease;
+    color: $primary;
+    &:hover {
+      color: $primary-dark;
+    }
+  }
+
+  .control-label {
+    padding-top: 11px;
+    color: $text-color;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+}
+
+.auth-input {
+  width: 300px;
+  margin-bottom: 24px;
+  input {
+    display: block;
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    padding: 4px 10px;
+    outline: none;
+  }
+}
+
+a.forgot-pass {
+  display: block;
+  text-align: right;
+  margin-bottom: -20px;
+  float: right;
+  z-index: 2;
+  position: relative;
+}
+
+.auth-link {
+  display: block;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 33px;
+}
+
+.auth-sep {
+  margin-top: 36px;
+  margin-bottom: 24px;
+  line-height: 20px;
+  font-size: 16px;
+  text-align: center;
+  display: block;
+  position: relative;
+  & > span {
+    display: table-cell;
+    width: 30%;
+    white-space: nowrap;
+    padding: 0 24px;
+    color: $text-color;
+    & > span {
+      margin-top: -12px;
+      display: block;
+    }
+  }
+  &:before, &:after {
+    border-top: solid 1px $text-color;
+    content: "";
+    height: 1px;
+    width: 35%;
+    display: table-cell;
+  }
+}
+
+.al-share-auth {
+  text-align: center;
+  .al-share {
+    float: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    li {
+      margin-left: 24px;
+      &:first-child {
+        margin-left: 0;
+      }
+      i {
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+.btn-auth {
+  color: #ffffff !important;
+}

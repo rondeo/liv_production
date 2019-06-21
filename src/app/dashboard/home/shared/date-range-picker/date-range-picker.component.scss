@@ -1,0 +1,20 @@
+div {
+  float: right;
+  > input {
+    margin-bottom: 0px !important;
+    width: 190px;
+    background-color: #32D296 !important;
+    box-shadow: 0 8px 30px 0 rgba(50, 210, 150, 0.2) !important;
+    color: #ffffff !important;
+    border-radius: 20px !important;
+    border: none !important;
+    float: right;
+  }
+  > i {
+    position: absolute;
+    right: 24px;
+    top: 9px;
+    color: #ffffff;
+    font-size: 14px;
+  }
+}

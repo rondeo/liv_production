@@ -1,0 +1,49 @@
+<app-page-header [pageTitle]="'Trigger Notifications'">
+    <div class="col-md-12">
+        <app-panel>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 33%; font-weight: bold; text-align:left;">Device</th>
+                        <th style="width: 33%; font-weight: bold;">Event</th>
+                        <th style="width: 33%; font-weight: bold;">Notify</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let device of devices">
+                    <tr>
+                        <td [rowSpan]="device.events.length + 1" style="vertical-align: middle; text-align:left;">
+                            {{device.label}}
+                        </td>
+                        <td>
+                            {{device.events[0].key}}
+                        </td>
+                        <td>
+                            <button class="btn btn-notify" (click)="sendNotification(device.events[0].value, device.value)">Notify
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let item of device.events; let idx = index;">
+                        <td *ngIf="idx>0" class="ignore" style="text-align:left;">
+                            {{item.key}}
+                        </td>
+                        <td *ngIf="idx>0">
+                            <button class="btn btn-notify" (click)="sendNotification(item.value, device.value)">Notify</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </app-panel>
+    </div>
+    <div class="col-md-12 number-div">
+        <app-panel [panelTitle]="'Numbers'">
+            <div class="number-inner">
+                <div class="outter" *ngFor="let x of connections">
+                    <span>
+                        <input type="checkbox" [(ngModel)]="sending[x.phone_no]" name="checkBox" [id]="'check-' + x.phone_no">&nbsp;
+                        <label [attr.for]="'check-' + x.phone_no">{{x.value}}</label>
+                    </span>
+                </div>
+            </div>
+        </app-panel>
+    </div>
+</app-page-header>

@@ -1,0 +1,22 @@
+.number-div {
+    margin-top: 30px;
+
+    .number-inner {
+        height: auto;
+        width: 100%;
+        display: block;
+
+        div.outter {
+            width: 170px;
+            display: inline-flex;
+            padding: 20px;
+        }
+    }
+}
+
+.btn.btn-notify {
+    border-radius: 0; 
+    color: white;
+    background-color: #1e87f0;
+    border: 1px #1e87f0;
+}

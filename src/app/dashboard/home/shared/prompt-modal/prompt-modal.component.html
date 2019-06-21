@@ -1,0 +1,14 @@
+<div class="modal-body" style="height: 40px; color:#7d7d7d;font-weight: 400;">
+  <p><strong>Are you sure you want to delete?</strong></p>
+  <button type="button" class="close" aria-describedby="modal-title" style="position: absolute;
+    right: 10px;
+    text-align: center;
+    top: 10px;"
+    (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-footer" style="padding:10px; border-top:0;">
+  <button type="button" class="btn btn-no" (click)="modal.dismiss('No')">No</button>
+  <button type="button" class="btn btn-yes" (click)="modal.close('Yes')">Yes</button>
+</div>

@@ -1,0 +1,461 @@
+<app-page-header >
+
+    
+    <div style="position:relative;display: inline-block;">
+   
+</div>
+<div class="col-md-8">
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-md-8" style="margin-top: -10px;
+            margin-bottom: 0px;">
+                <h1 class="al-title" style=" font-size: 28px; color: #000A12;font-weight: 400;">Conversational Elements</h1>
+                <div class="go-back" *ngIf="goBack">
+                        <a (click)="handleGoBack()">
+                            <i class="fa fa-angle-left"></i>
+                            <h1>Go back</h1>
+                        </a>
+                    </div> 
+            </div>
+            <div class="col-md-4">
+             <div class="" *ngIf="userType==='agent'" style="display: inline-block;float: right;" (click)="selectPermission('', {'action':'add'},'')">
+                 <a [ngStyle]="{'background': selectedQuestion.add ==true?'#BDBDBD':'#1e87f0'}" style="padding: 5px 48px;color:white;font-size:16px;border-radius:25px;">
+                     <i class="fa fa-plus"></i>
+         
+                 </a>
+             </div>
+                
+        </div>
+               
+        </div>
+</div>
+
+    <div>
+        <div class="col-md-8">
+            <p class="no-msg" *ngIf="questionError.status">
+                {{questionError.message}}
+            </p>
+        </div>
+    </div>
+    <div>
+
+        <div class="col-md-8">
+            <div class="row" style="margin-bottom:15px;">
+                <div class="col-md-12" style="padding-right: 16px;
+                    text-align: right;">
+                     <div class="inner-addon left-addon">
+                            
+                            <i class="fas fa-search"></i>
+                    <!--<input (keyup)="searchTerm$.next($event.target.value)">-->
+                    <input type="text"  [(ngModel)]="search" (keyup)="searchTerm$.next($event.target.value)" placeholder="Search" class="form-control form-cotrol-question" style="height: 40px;border: none;" name="add_new_variant_question">
+                </div>
+                </div>
+               
+            </div>
+            <mat-tab-group  #tabGroup (selectedTabChange)="yourFn($event)">
+                <mat-tab [label]="tab.category" *ngFor="let tab of QAcategory"> </mat-tab>
+            </mat-tab-group>
+            <div class="row">
+                <div class="col-md-12" *ngFor="let question of questions; let i=index;">
+                    <app-panel [panelStyle]="panelStyle">
+                        <div *ngIf="question.show" [ngStyle]="{'background-color':question.approved === 'pending' ? '#E0E0E0' : '#FFF' }" style="min-height: 140px;margin-bottom: 25px;max-height: 10000px;">
+                            <div class="sep-ques-ans" style="cursor:pointer" [ngClass]="{'highlight': question.highlight}">
+                                <div>
+                                    <div>
+                                        <input type="text"[ngStyle]="{'text-align':arabic_lan?'right':'left',
+                                        'direction': arabic_lan?'rtl':'ltr'}"  [(ngModel)]="question.question" placeholder="Add new variant question" class="form-control form-cotrol-question" style="height: 40px;" name="add_new_variant_question">
+                                    </div>
+                                    <div>
+                                        <div class="form-group">
+                                            <div>
+                                                <div style="display: inline-block;
+                                                width: 60%;padding-right: 20px;padding-bottom: 12px;">
+                                                <input type="text" [ngClass]="{'border-varient-error': updatestatus[i], 'border-varient': !updatestatus[i]}" [ngStyle]="{'text-align':arabic_lan?'right':'left',
+                                                'direction': arabic_lan?'rtl':'ltr'}" [(ngModel)]="tempVal[i]" (keydown)="onKeydown1($event,tempVal[i],question._id,i)" placeholder="Add new variant question" class="form-control form-cotrol-question" style="height: 40px;" name="add_new_variant_question" maxlength="1024">
+                                                <span *ngIf="tempVal[i]"
+                                                    (click)="clearText(i)"
+                                                    class="glyphicon glyphicon-remove " 
+                                                    style="cursor: pointer; pointer-events: all;float: right;position: relative;top: -26px;left: -6px;color: rgb(206, 204, 204);">
+                                        </span>
+                                                </div>
+                                                <div style="display:inline-block;position: relative;top: 9px;">
+                                                    <p style="color:#BDBDBD;margin-bottom: 2px;font-size:10px;">Press enter to add question</p>
+                                                    <p class="" *ngIf="(1024 - variant_question.length)>10" style="font-size:10px;color:#2AC940;margin-bottom: 0px;">{{1024 - variant_question.length }}</p>
+                                                    <p class="" *ngIf="(1024 - variant_question.length)<=10" style="font-size:10px;color:red;
+                                                        margin-bottom: 0px;">{{1024 - variant_question.length }}
+                                                    </p>
+                                                </div>
+                                                <p style="color:red;font-size:12px;margin:0px;">{{updateErrorMsg[i]}}</p>
+                                            </div>
+                                            <div class="col">
+                                                <div ngbDropdown class="d-inline-block" *ngFor="let varient of question.sub_question">
+                                                       
+                                                        <button *ngIf="userType==='agent'" class="btn btn-outline-primary" id="dropdownBasic1" [ngStyle]="{'background': varient.approve_status !=='pending' && varient.approve_status !=='delete'?'#F2F2F2':'#d5d5d5'}" ngbDropdownToggle><i *ngIf="varient.approve_status =='pending' || varient.approve_status =='delete'" class="fas fa-user-clock"></i>
+                                                            <i *ngIf="varient.approve_status =='rejected'" class="fas fa-times-circle"></i> {{varient.sub_questions}}<i class="fa fa fa-caret-down" aria-hidden="true" style="padding: 0px 10px;"></i></button>
+                                                    <div class="questionsvarient" ngbDropdownMenu aria-labelledby="dropdownBasic1" *ngIf="userType ==='agent'">
+                                                            <button style="width:125px" *ngIf="varient.approve_status !=='rejected'" class="dropdown-item" (click)="changePrimary(varient,question)">Use as primary</button>
+                                                            <button class="dropdown-item"  (click)='subqaremove(varient._id,question,"delete1")'>Delete</button>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:0px;">
+                                        <textarea style="padding:3px;" placeholder="" class="form-control form-cotrol-question" [(ngModel)]="question.answer" name="answer" style="height: 80px;" maxlength="5000" [ngStyle]="{'text-align':arabic_lan?'right':'left',
+                                            'direction': arabic_lan?'rtl':'ltr'}"></textarea>
+                                        <p class="text-right" *ngIf="(5000 - question.answer.length)>10" style="font-size:10px;color:#2AC940;padding: 0px 0 0px 0px;margin-bottom: 0px;">{{5000 - question.answer.length }}</p>
+                                        <p class="text-right" *ngIf="(5000 - question.answer.length)<=10" style="font-size:10px;color:red;padding: 0px 0 0px 0px;
+                                            margin-bottom: 0px;">{{5000 - question.answer.length  }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <div style="display:inline-block">
+                                            <ui-switch class="radio-inline" style="padding-left:0px;" color='#007ad9' [(ngModel)]="question.fetch_api" name="fetchApi" size="small"></ui-switch>
+                                            <span>&nbsp;Dynamic</span>&nbsp;&nbsp;
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <button class="btn-blue" id="updateButton" style="margin-right:10px;"  (click)="updateQuestion(question)">
+                                            Update
+                                        </button>
+                                        <button class="btn-grey" style="margin-right:10px;" (click)="clicked1(i)">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div [ngStyle]="{'background-color':question.approved === 'pending' ? '#E0E0E0' : '#FFF' }" style="min-height: 140px;margin-bottom: 25px;max-height: 10000px;" *ngIf="!question.show">
+                            <div class="sep-ques-ans" style="cursor:pointer" [ngClass]="{'highlight': question.highlight}">
+                                <div (click)="selectPermission(question, {'action':'view'},'')">
+                                    <div style="display: inline-block;width:88%">
+                                        <h2 class="conversation-questions" style="display: inline-block;" [ngStyle]="{'text-align':arabic_lan?'right':'left',
+                                    'direction': arabic_lan?'rtl':'ltr'}">
+                                        {{question.question | truncate:[50]}} ({{question.sub_question.length}})<span style="color:#000a1287;font-size: 15px;">  <button class="btn btn-link" style="display: inline;" (click)="clicked2(i,'subview')" aria-controls="collapseExample">
+                                            <i style="color:#495057" class="fas fa-caret-down" *ngIf="!question.isCollapsed ||question.isCollapsed == undefined"></i>
+                                            <i style="color:#495057" class="fas fa-caret-up" *ngIf="question.isCollapsed"></i>
+
+                                            </button></span>
+                                        </h2>
+
+                                    </div>
+                                    <div *ngIf="question.approved === 'pending'" style="display: inline-block;float: right;padding-top: 5px;font-size: 12px;"><i class="fas fa-user-clock"></i> Pending</div>
+                                    <div *ngIf="question.isCollapsed">
+                                        <div class="form-group">
+                                            <div *ngIf="userType==='agent'">
+                                                <div style="display: inline-block;
+                                            width: 60%;
+                                            padding-right: 20px;padding-bottom: 12px;">
+                                            <input type="text" [ngClass]="{'border-varient-error': errorstatus[i], 'border-varient': !errorstatus[i]}"  (keydown)="onKeydown4($event,tempVal[i], question._id,i)" [ngStyle]="{'text-align':arabic_lan?'right':'left',
+                                            'direction': arabic_lan?'rtl':'ltr'}" placeholder="Add new variant question" [(ngModel)]="tempVal[i]" class="form-control form-cotrol-question" style="height: 40px;" name="add_new_variant_question" maxlength="1024">
+                                            <span *ngIf="tempVal[i]"
+                                                (click)="clearvarient(i)"
+                                                class="glyphicon glyphicon-remove " 
+                                                style="cursor: pointer; pointer-events: all;float: right;position: relative;top: -26px;left: -6px;color: rgb(206, 204, 204);">
+                                    </span>
+
+                                                </div>
+                                                <div style="display:inline-block;position: relative;top: 9px;">
+                                                    <p style="color:#BDBDBD;margin-bottom: 2px;font-size:10px;">Press enter to add question</p>
+                                                    <p class="" *ngIf="(1024 - variant_question.length)>10" style="font-size:10px;color:#2AC940;margin-bottom: 0px;">{{1024 - variant_question.length }}</p>
+                                                    <p class="" *ngIf="(1024 - variant_question.length)<=10" style="font-size:10px;color:red;
+                                                        margin-bottom: 0px;">{{1024 - variant_question.length  }}
+                                                    </p>
+                                                </div>
+                                                <p style="color:red;font-size:12px;margin:0px;">{{errorMsg[i]}}</p>
+                                            </div>
+                                            <div class="col">
+                                                <div ngbDropdown class="d-inline-block" *ngFor="let varient of question.sub_question">
+                                                        <button  class="btn btn-outline-primary" id="dropdownBasic1" [ngStyle]="{'background': varient.approve_status !=='pending' && varient.approve_status !=='delete'?'#F2F2F2':'#d5d5d5'}" ngbDropdownToggle><i *ngIf="varient.approve_status =='pending' || varient.approve_status =='delete'" class="fas fa-user-clock"></i><i *ngIf="varient.approve_status =='rejected'" class="fas fa-times-circle"></i> {{varient.sub_questions}}<i class="fa fa fa-caret-down" aria-hidden="true" style="padding: 0px 10px;"></i></button>
+                                                    <div class="questionsvarient" ngbDropdownMenu aria-labelledby="dropdownBasic1" *ngIf="userType==='agent'">
+                                                        <button style="width:125px" *ngIf="varient.approve_status !=='rejected'" class="dropdown-item" (click)="changePrimary(varient,question)">Use as primary</button>
+                                                        <button *ngIf="varient.approve_status =='pending' || varient.approve_status =='rejected'" class="dropdown-item"  (click)='subqaremove(varient._id,question,"delete2")'>Delete</button>
+                                                        <button *ngIf="varient.approve_status =='approved'" class="dropdown-item" (click)='subqaApproveremove(varient._id,question)'>Delete</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="question-response" [ngStyle]="{'text-align':arabic_lan?'right':'left',
+								'direction': arabic_lan?'rtl':'ltr'}">{{question.answer | truncate:[270]}}</p>
+                                </div>
+                                <div class="absolute">
+                                    <div class="conversation-div">
+
+                                        <span class="coversation-date-span" style="padding-right: 10px;">{{question.created_on }}</span>
+                                        <span class="coversation-date-span" style="padding-right: 10px;">Created by {{question.created_by}}</span>
+                                    </div>
+                                    <div class="conversation-div">
+                                        <div *ngIf="question.category != null">
+                                           <span style="padding-right: 10px;">Category: {{question && question.category && question.category.category ? question.category.category : ''}}</span>
+                                        </div>
+                                        
+                                        <!--<div *ngIf="question.approved == 'pending'">
+                                            <i class="fa fa-minus-circle" aria-hidden="true" style="color:red;font-size: 20px;"></i>
+
+                                            <span>Awaiting Approoval</span>
+                                        </div>-->
+
+                                    </div>
+                                    <div class="conversation-div" *ngIf="question.approved == 'pending'">
+                                        <span style="left: 2px;padding-right:0;" class="coversation-date-span" *ngIf="question.assigned_to&&question.assigned_to.email != null">
+                                            Assigned to &nbsp;&nbsp;</span>
+                                    </div>
+
+                                    <div *ngIf="assignees.length" class="conversation-div">
+                                        <span style="left: 2px;" class="coversation-date-span" *ngIf="question.approved === 'pending'">
+                                            <p-dropdown [options]="assignees" [(ngModel)]="question.assigned_to"
+                                                placeholder="Assign" [style]="{'background-color': '#cbcbcb','width': 'auto','font-size': '8px','border': '0px'}"
+                                                [panelStyle]="{'background-color':'#ffffff','width':'120px','border-radius': '0','border': '0'}"
+                                                optionLabel="name" (onChange)="handleAssignee(question)"></p-dropdown>
+
+                                        </span>
+                                        <!--  -->
+                                    </div>
+									<p *ngIf="userType==='agent'" style="text-align: right;width:100%;font-size:10px;margin:0px;position: relative; top: -3px;color: #828282;" >Article ID:&nbsp;{{question.article_id}}</p>
+									<div *ngIf="userType==='developer'" class="conversation-div" style="text-align: right;width:100%;font-size:10px;margin:0px;position: relative;
+									top: -11px;color: #828282;">
+										<span >
+											<input type="text" [(ngModel)]="question.article_id" name="articleid" (keydown)="onKeydown6($event,question.article_id, question._id)" style="padding: 4px;
+											font-size: 11px;display: inline-block;">
+											<button (click)="updateArticleId(question.article_id, question._id)" style="display: inline-block;padding:5px;
+											margin-left: 3px;
+											background: rgb(30, 135, 240);
+											border: 0px solid rgb(30, 135, 240);border-radius: 4px;"><i  class="fa fa-floppy-o" style="padding: 1px 0px 0px 3px;
+											 color:white"></i></button>
+											</span>
+									</div>
+
+                                    <!-- <div class="conversation-div" style="float: right;position: relative;bottom: -12px;">
+                                        <span>Article ID:&nbsp;{{question.article_id}}</span>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="dropdown-side-menu-question" style="cursor:pointer">
+                                <div ngbDropdown class="d-inline-block">
+                                    <a style="padding:0 5px 0 10px;" ngbDropdownToggle>
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </a>
+                                    <ul class="dropdown-menu-question " ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                        <li>
+                                        </li>
+                                        <li *ngFor="let permission of question.permissions">
+                                            <a (click)="selectPermission(question, permission,i);">
+                                                {{permission.name}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </app-panel>
+                </div>
+
+                <app-pagination [collectionSize]="totalCount" [(page)]="page" [maxSize]="3" [disabled]="paginationDisabled" (pageChange)="pageChanged($event)"></app-pagination>
+            </div>
+        </div>
+        <div *ngIf="userType==='agent'" class="col-md-4 conversation-right-div">
+            <div *ngIf="selectedQuestion.reject;">
+                <h4>Reject Question</h4>
+                <p class="question-form-label">Comment</p>
+                <div class="form-group">
+                    <textarea style="height: 60px;padding: 3px;" placeholder="" class="form-control form-cotrol-question" [(ngModel)]="selectedQuestion.comment" name="comment"></textarea>
+                </div>
+            </div>
+            <form name="form" *ngIf="selectedQuestion.add == true">
+                <div class="form-body" >
+                    <!-- <ng-template  >-->
+
+                    <div class="">
+                        <p style="font-size:24px;font-weight:regular;margin-bottom:25px;">Add Questions</p>
+                        <ui-switch class="radio-inline" style="padding-left:0px;" color='#007ad9' [(ngModel)]="model.fetchData" name="fetchApi" size="small"></ui-switch>
+                        <span>&nbsp;Dynamic</span>&nbsp;&nbsp;
+                        
+                        <p style="margin-bottom: 5px;
+                            margin-top: 10px;" class="question-form-label">Article ID</p>
+                        <input type="text"required #article_id="ngModel" placeholder="Article ID" class="form-control form-cotrol-question" [(ngModel)]="model.article_id" style="height: 40px;" name="article_id">
+                    </div>
+                    <p class="question-form-label" style="margin: 20px 0px 5px 0px;">Primary Question
+                    </p>
+                    <div class="">
+                        <div>
+                            <textarea name="question" style="max-height: 40px;padding: 9px 10px;height: auto;width: 100%;" [ngStyle]="{'text-align':arabic_lan?'right':'left',
+								'direction': arabic_lan?'rtl':'ltr'}" class="form-control form-cotrol-question" maxlength="1024" [(ngModel)]="model.question"></textarea>
+                                <p *ngIf="1024 -model.question.length >=10" style="display:inline-block;margin-right: 5px;color:#2AC940;float: right;margin-bottom: 2px;font-size:10px;">{{ 1024 - model.question.length }}</p>
+                                <p *ngIf="1024 -model.question.length < 10" style="display:inline-block;margin-right: 5px;color:red;float: right;margin-bottom: 2px;font-size:10px;">{{ 1024 - model.question.length }}</p>
+                            <!-- <textarea [disabled]="selectedQuestion.view || userType==='developer'" style="height: 50px;padding: 3px;"
+                                placeholder="" class="form-control form-cotrol-question" [(ngModel)]="selectedQuestion.question"
+                                name="question" maxlength="1024"></textarea> -->
+                            
+                            <div style="padding-top: 0px;padding-right:4px;display:inline-block;width: 95%;">
+                                <input type="text" [ngClass]="{'border-varient-error': addstatus, 'border-varient': !addstatus}"  (keydown)="onKeydown($event,model.sub_question)" [(ngModel)]="model.sub_question" placeholder="Add new variant question" class="form-control form-cotrol-question" style="height: 40px;" name="add_new_variant_question" maxlength="1024">
+                                <span *ngIf="model.sub_question"
+                                (click)="clearvarientQA()"
+                                class="glyphicon glyphicon-remove " 
+                                style="cursor: pointer; pointer-events: all;float: right;position: relative;top: -26px;left: -6px;color: rgb(206, 204, 204);">
+                                </span>
+
+                            </div>
+
+                            
+                            <div style="width: 95%;">
+                                <p style="display:inline-block;color:#BDBDBD;margin-bottom: 2px;font-size:10px;">Press enter to add question</p>
+                                <p *ngIf="1024 -model.sub_question.length >=10" style="display:inline-block;margin-right: 5px;color:#2AC940;float: right;margin-bottom: 2px;font-size:10px;">{{ 1024 - model.sub_question.length }}</p>
+                                <p *ngIf="1024 -model.sub_question.length < 10" style="display:inline-block;margin-right: 5px;color:red;float: right;margin-bottom: 2px;font-size:10px;">{{ 1024 - model.sub_question.length }}</p>
+                                <p style="color:red;font-size:12px;margin:0px;">{{addErrorMsg}}</p>
+                            </div>
+                            <p style="color:red;font-size:12px;margin:0px;">{{updateErrorMsg[i]}}</p>
+                            <div ngbDropdown class="d-inline-block" *ngFor="let varient of subquestions">
+                                <button class="btn btn-outline-primary" id="dropdownBasic1" style="background:#F2F2F2" ngbDropdownToggle><i  class="fas fa-user-clock"></i> {{varient.sub_questions}}<i class="fa fa fa-caret-down" aria-hidden="true" style="padding: 0px 10px;"></i></button>
+                                <div class="questionsvarient" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button class="dropdown-item" (click)='subqaremovelocaly(varient.sub_questions)'>Delete</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <p class="question-form-label" style="margin: 20px 0px 5px 0px;">Answer</p>
+                    <div class="">
+                        <textarea style="padding: 5px 10px;height: 100px;" placeholder="Type your answer here..." class="form-control form-cotrol-question" [(ngModel)]="model.answer" name="answer" maxlength="5000" [ngStyle]="{'text-align':arabic_lan?'right':'left','direction': arabic_lan?'rtl':'ltr'}"></textarea>
+                    </div>
+                    
+                    <div style="margin-top:15px;">
+                        <button type="button" class="btn-blue" style="margin-right:10px;" (click)="handleQuestion(model)">
+                            Add
+                        </button>
+                        <button class="btn-grey" style="margin-right:10px;" (click)="cancelQuestion()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+        <div *ngIf="selectedQuestion.view == true" class="col-md-4 conversation-right-div">
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="question-view-label">Primary question</p>
+                        <p class="view-questions-part">{{selectedQuestion.question}} ({{selectedQuestion.sub_question.length}})</p>
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                        <p class="question-view-label">Answer</p>
+                        <p class="view-answer-part">{{selectedQuestion.answer}}</p>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-7">
+                        <p class="question-view-label">Data Type</p>
+                        <p style="text-transform: capitalize;" class="view-answer-part">{{selectedQuestion.question_type}}</p>
+                    </div>
+                    <div class="col-md-5">
+                        <p class="question-view-label">Article ID</p>
+                        <p class="view-answer-part">{{selectedQuestion.article_id}}</p>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-7">
+                        <p class="question-view-label">Created on</p>
+                        <p class="view-answer-part">{{selectedQuestion.created_on  }}</p>
+                    </div>
+                    <div class="col-md-5">
+                        <p class="question-view-label">Created by</p>
+                        <p class="view-answer-part">{{selectedQuestion.created_by}}</p>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-7">
+                        <p class="question-view-label">Status</p>
+                        <p style="text-transform: capitalize;" class="view-answer-part">{{selectedQuestion.approved}}</p>
+                    </div>
+                    <div class="col-md-5">
+                        <p class="question-view-label" *ngIf="selectedQuestion.approved_by">Approved by</p>
+                        <p class="view-answer-part" >{{selectedQuestion && selectedQuestion.approved_by && selectedQuestion.approved_by.name ? selectedQuestion.approved_by.name : ''}}</p>
+                    </div>
+                </div>
+                <br>
+                <!-- <div class="row">
+                    <div class="col-md-7"  >
+                        <p class="question-view-label">Category</p>
+                        <p class="view-answer-part">{{selectedQuestion && selectedQuestion.category && selectedQuestion.category.category ? selectedQuestion.category.category : ''}}</p>
+                    </div>
+                </div> -->
+            </div>
+        <div *ngIf="selectedQuestion.reject" class="col-md-4 conversation-right-div">
+           
+            <form>
+                <div class="form-body">
+                    <div *ngIf="selectedQuestion.reject">
+                        <h4>Reject Question</h4>
+                        <p class="question-form-label">Comment</p>
+                        <div class="form-group">
+                            <textarea style="height: 60px;padding: 3px;" placeholder="" class="form-control form-cotrol-question" [(ngModel)]="selectedQuestion.comment" name="comment"></textarea>
+                        </div>
+                        <button class=" btn-blue" style="margin-right:10px;" (click)="updateQuestion(selectedQuestion)">
+                            Rejected
+                        </button>
+                        <button class="btn-grey" style="margin-right:10px;" (click)="cancelQuestion()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+        <div *ngIf="selectedQuestion.approve" class="col-md-4 conversation-right-div">
+               
+                <form>
+                    <div class="form-body">
+                   <!-- <ng-template #add>-->
+                       <div >
+                        <ui-switch class="radio-inline" style="padding-left:0px;" color='#007ad9' [disabled]="selectedQuestion.view || userType==='developer'" name="fetchApi" [(ngModel)]="selectedQuestion.fetchData" size="small"></ui-switch>
+						<span *ngIf="selectedQuestion.fetchData == true">&nbsp;Dynamic</span>
+						<span *ngIf="selectedQuestion.fetchData == false">&nbsp;Static</span>&nbsp;&nbsp;
+                        <p style="margin-bottom: 5px;
+                            margin-top: 10px;" class="question-form-label">Article ID</p>
+                        <p>{{selectedQuestion.article_id}}</p>
+                        <p class="question-form-label" style="margin: 20px 0px 5px 0px;">Primary Question
+                        </p>
+                        
+                        <p class="view-questions-part">{{selectedQuestion.question}}
+                        </p>
+                        <div style="margin-bottom:20px;">
+                        <div ngbDropdown class="d-inline-block" *ngFor="let textArea of textAreas; let i = index" >
+                                <button class="btn btn-outline-primary" id="dropdownBasic1" style="background:#F2F2F2" ngbDropdownToggle>
+                                    <i class="fas fa-minus-circle" *ngIf="textArea.approve_status=='delete'"></i><i  class="fas fa-user-clock" *ngIf="textArea.approve_status=='pending'"></i><i *ngIf="textArea.approve_status =='rejected'" class="fas fa-times-circle"></i> {{textArea.sub_questions}}<i class="fa fa fa-caret-down" aria-hidden="true" style="padding: 0px 10px;"></i>
+                                </button>
+                                <div class="questionsvarient" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                    <button class="dropdown-item" (click)="declineText(textArea._id)">{{ textArea.decline }}</button>
+                                </div>
+                            </div>
+                            </div>
+                        <p class="question-form-label" >Answer</p>
+                        <p class="view-answer-part">{{selectedQuestion.answer}}</p>
+                        
+                    </div>
+                    <!--</ng-template>-->
+
+                    <p *ngIf="reasonApproveStatus" class="conversation-details-right-text">Reason</p>
+                    <div *ngIf="reasonApproveStatus" class="form-group">
+                        <textarea style="height: 100px;padding: 3px 10px;" class="form-control form-cotrol-question" [(ngModel)]="selectedQuestion.comment" name="reason"></textarea>
+
+                    </div>
+                    <button class=" btn-blue" style="margin-right:10px;" (click)="approveQuestion(selectedQuestion)">
+                        Approve
+                    </button>
+                    <button class="btn-grey" style="margin-right:10px;" (click)="cancelQuestion()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</app-page-header>

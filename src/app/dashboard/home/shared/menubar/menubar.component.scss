@@ -1,0 +1,32 @@
+.top-right {
+    position: absolute;
+    top: 14px;
+    left: 170px;
+
+    .nav.nav-pills {
+        padding: 0px 0 7px 0;
+
+        >li {
+            width: 160px;
+            text-align: center;
+
+            >a {
+                border-radius: 18px;
+                background-color: #BDBDBD;
+                color: #fff;
+                padding: 8px 15px;
+                cursor: pointer;
+            }
+        }
+
+        >li+li {
+            margin-left: 10px;
+        }
+
+        >li.active>a,
+        >li.active>a:hover,
+        >li.active>a:focus {
+            background-color: #1E87F0;
+        }
+    }
+}

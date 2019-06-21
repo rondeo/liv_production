@@ -1,0 +1,109 @@
+<div class="register-outter">
+  <div class="register-image">
+    <img src="assets/images/uib-blue.png" />
+  </div>
+  <div class="register-form">
+    <form name="registerForm" #registerForm="ngForm">
+      <div class="form-block">
+        <div class="header-block">
+          <div class="number-block">
+            1
+          </div>
+          <mat-form-field>
+            <mat-select placeholder="Room Number" [(value)]="roomNumber" required>
+              <mat-option *ngFor="let room of rooms" [value]="room.room_number">
+                {{room.room_number}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="content-block">
+          <button type="button" [disabled]="roomNumber===''" mat-raised-button (click)="checkOut()">CHECK OUT</button>
+        </div>
+      </div>
+      <div class="form-block">
+        <div class="header-block">
+          <div class="number-block">
+            2
+          </div>
+          <mat-form-field>
+            <input matInput [matDatepicker]="date1d" placeholder="Check in" [(ngModel)]="date1" name="date1" [min]="today"
+              (dateChange)="changeDate1($event)" (click)="date1d.open()">
+            <mat-datepicker-toggle matSuffix [for]="date1d"></mat-datepicker-toggle>
+            <mat-datepicker touchUi #date1d></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="content-block">
+          <mat-form-field>
+            <input matInput [ngxTimepicker]="date1t" placeholder="Time" [value]="date1" name="date1t" >
+            <ngx-material-timepicker #date1t [minutesGap]="5" (timeSet)="setTime1($event)" [enableKeyboardInput]="true"></ngx-material-timepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-block">
+        <div class="header-block">
+          <div class="number-block">
+            3
+          </div>
+          <mat-form-field>
+            <input matInput [matDatepicker]="date2d" placeholder="Check out" [(ngModel)]="date2" name="date2" [min]="minDate2" (click)="date2d.open()">
+            <mat-datepicker-toggle matSuffix [for]="date2d"></mat-datepicker-toggle>
+            <mat-datepicker touchUi #date2d></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="content-block">
+          <mat-form-field>
+            <input matInput [ngxTimepicker]="date2t" placeholder="Time" [value]="date2" name="date2t">
+            <ngx-material-timepicker #date2t [minutesGap]="5" (timeSet)="setTime2($event)" [enableKeyboardInput]="true"></ngx-material-timepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-block">
+        <div class="header-block">
+          <div class="number-block">
+            4
+          </div>
+          <mat-form-field style="width: 15%">
+            <mat-select placeholder="" [(value)]="namePrefix">
+              <mat-option *ngFor="let name of namePrefixes" [value]="name">
+                {{name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field style="width: 64%">
+            <input matInput placeholder="Name" [(ngModel)]="user.name" name="userName" #userName="ngModel" required>
+            <mat-error *ngIf="userName.invalid && (userName.dirty || userName.touched)">
+              Name is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-block">
+        <div class="header-block">
+          <div class="number-block">
+            5
+          </div>
+          <div class="label-div">
+            Phone Number
+          </div>
+        </div>
+        <div class="content-block phone-no">
+          <int-phone-prefix [(ngModel)]="user.phoneNo" [defaultCountry]="countryCode" name="phoneNumber"
+            (ngModelChange)="changePhoneNo();"></int-phone-prefix>
+        </div>
+      </div>
+	  <div class="form-block">
+	    <div class="content-block">
+	      <div *ngIf="message.status" 
+	        [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }">
+		    {{message.text}}
+	      </div>
+	    </div>
+	  </div>
+      <div class="button-block">
+        <button type="submit" mat-raised-button color="primary" (click)="registerRoom()">REGISTER</button>
+      </div>
+    </form>
+  </div>
+</div>
