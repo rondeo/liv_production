@@ -1,0 +1,12 @@
+version: '2'
+services:
+#  node:
+#    image: 'node:alpine'
+  nginx:
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label: newhost=newhost
+      io.rancher.container.network: true
+    image: rajeshworld/node:uib
+    ports:
+      - "5050:80"
